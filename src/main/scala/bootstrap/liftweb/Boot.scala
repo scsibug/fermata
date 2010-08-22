@@ -12,6 +12,7 @@ import mapper._
 
 import code.model._
 
+import org.texart.fermata.MailServerManager
 
 /**
  * A class that's instantiated early and run.  It allows the application
@@ -29,6 +30,9 @@ class Boot {
       LiftRules.unloadHooks.append(vendor.closeAllConnections_! _)
 
       DB.defineConnectionManager(DefaultConnectionIdentifier, vendor)
+      
+      // Start server
+      MailServerManager.startNewServer("default",2500)
     }
 
     // Use Lift's Mapper ORM to populate the database

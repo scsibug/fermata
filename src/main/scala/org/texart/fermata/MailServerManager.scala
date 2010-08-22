@@ -11,11 +11,12 @@ import java.io.IOException
 import java.io.InputStream
 
 
-class MailServerManager {
+object MailServerManager {
   var serverMap = new HashMap[String, SMTPServer]
  
   def startNewServer(name: String, port: Int) {
     var server = new SMTPServer(new LoggingMessageHandlerFactory())
+    server.setPort(port)
     serverMap += name -> server
     server.start()
   }
