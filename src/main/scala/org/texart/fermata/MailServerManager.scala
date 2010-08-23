@@ -14,12 +14,20 @@ import java.io.InputStream
 object MailServerManager {
   var serverMap = new HashMap[String, SMTPServer]
  
-  def startNewServer(name: String, port: Int) {
+  def startServer(name: String, port: Int) {
     var server = new SMTPServer(new LoggingMessageHandlerFactory())
     server.setPort(port)
     serverMap += name -> server
     server.start()
   }
+
+  def stopServer(name: String) = serverMap.remove(name) match {
+      case None => false
+      case Some(x) => {x.stop() ; true}
+    }
+
+  def portsInUse():Iterable[Int] = 
+    serverMap.values.map{i => i.getPort}
 }
 
 class LoggingMessageHandlerFactory extends MessageHandlerFactory {

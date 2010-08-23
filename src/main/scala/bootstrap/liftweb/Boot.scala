@@ -30,10 +30,10 @@ class Boot {
       LiftRules.unloadHooks.append(vendor.closeAllConnections_! _)
 
       DB.defineConnectionManager(DefaultConnectionIdentifier, vendor)
-      
-      // Start server
-      MailServerManager.startNewServer("default",2500)
     }
+
+    // Start a default mail server
+    MailServerManager.startServer("default",2500)
 
     // Use Lift's Mapper ORM to populate the database
     // you don't need to use Mapper to use Lift... use
