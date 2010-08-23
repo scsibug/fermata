@@ -7,9 +7,10 @@ import org.subethamail.smtp.MessageHandlerFactory
 import org.subethamail.smtp.MessageHandler
 import org.subethamail.smtp.RejectException
 import org.subethamail.smtp.MessageContext
-import java.io.IOException
-import java.io.InputStream
 
+import com.sun.mail.smtp.SMTPMessage
+
+import java.io.{IOException, InputStream}
 
 object MailServerManager {
   var serverMap = new HashMap[String, SMTPServer]
@@ -35,25 +36,36 @@ class LoggingMessageHandlerFactory extends MessageHandlerFactory {
 }
 
 class Handler(ctx: MessageContext) extends MessageHandler {
+  var from = ""
+  var recipients = List[String]()
+  var msg : SMTPMessage = _
+
+  println("Creating new Handler")
 
   @throws(classOf[RejectException])
-  def from(from: String) {
-    
+  def from(f: String) {
+    from = f
   }
 
   @throws(classOf[RejectException])
   def recipient(recipient: String) {
-    
+    recipients = recipient :: recipients
   }
 
   @throws(classOf[IOException])
   def data(data: InputStream) {
-
+    //var datastr = io.Source.fromInputStream(data).mkString
+    //println ("Data:\n" ++ datastr)
+    msg = new SMTPMessage(null, data)
+    println ("Message done.")
+    println ("Message from: " ++ from)
+    println ("All recipients: " ++ (recipients mkString " "))
+    println ("MessageID: " ++ msg.getMessageID())
+    println ("Subject: " ++ msg.getSubject())
+    println ("Body Size: " ++ (msg.getSize().toString))
   }
-  
-  def done {
 
-  }
+  def done {}
 }
 
 
