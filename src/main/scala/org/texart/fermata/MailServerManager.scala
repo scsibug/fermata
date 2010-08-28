@@ -10,6 +10,8 @@ import org.subethamail.smtp.MessageContext
 
 import com.sun.mail.smtp.SMTPMessage
 
+import net.liftweb.common.Logger
+
 import java.io.{IOException, InputStream}
 
 object MailServerManager {
@@ -35,12 +37,12 @@ class LoggingMessageHandlerFactory extends MessageHandlerFactory {
   def create(ctx:MessageContext) = new Handler(ctx)
 }
 
-class Handler(ctx: MessageContext) extends MessageHandler {
+class Handler(ctx: MessageContext) extends MessageHandler with Logger {
   var from = ""
   var recipients = List[String]()
   var msg : SMTPMessage = _
 
-  println("Creating new Handler")
+  debug("Creating new Handler")
 
   @throws(classOf[RejectException])
   def from(f: String) {
@@ -55,14 +57,14 @@ class Handler(ctx: MessageContext) extends MessageHandler {
   @throws(classOf[IOException])
   def data(data: InputStream) {
     //var datastr = io.Source.fromInputStream(data).mkString
-    //println ("Data:\n" ++ datastr)
+    //debug("Data:\n" ++ datastr)
     msg = new SMTPMessage(null, data)
-    println ("Message done.")
-    println ("Message from: " ++ from)
-    println ("All recipients: " ++ (recipients mkString " "))
-    println ("MessageID: " ++ msg.getMessageID())
-    println ("Subject: " ++ msg.getSubject())
-    println ("Body Size: " ++ (msg.getSize().toString))
+    info("Message done.")
+    debug("Message from: " ++ from)
+    debug("All recipients: " ++ (recipients mkString " "))
+    debug("MessageID: " ++ msg.getMessageID())
+    debug("Subject: " ++ msg.getSubject())
+    debug("Body Size: " ++ (msg.getSize().toString))
   }
 
   def done {}
