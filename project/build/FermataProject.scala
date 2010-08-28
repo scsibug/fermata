@@ -1,9 +1,10 @@
 import sbt._
 
 class FermataProject(info: ProjectInfo) extends DefaultWebProject(info) {
-//  val liftVersion = "2.0-scala280-SNAPSHOT"
   val liftVersion = "2.1-SNAPSHOT"
   val scalaToolsSnapshots = "Scala-Tools Maven2 Snapshots Repository" at "http://scala-tools.org/repo-snapshots/"
+  val mavenLocal = "Local Maven Repository" at "file://"+Path.userHome+"/.m2/repository"
+
   override def libraryDependencies = Set(
     "net.liftweb" %% "lift-webkit" % liftVersion % "compile->default",
     "net.liftweb" %% "lift-mapper" % liftVersion % "compile->default",
