@@ -6,11 +6,13 @@ import _root_.net.liftweb.common._
 
 class Message extends LongKeyedMapper[Message] with IdPK {
   def getSingleton = Message
-  object msgBody extends MappedText(this)
+  object msgBody extends MappedBinary(this)
   object subject extends MappedText(this)
   object sender extends MappedEmail(this, 256)
+  object sentDate extends MappedDateTime(this)
+  object messageId extends MappedString(this, 256)
 }
 
 object Message extends Message with LongKeyedMetaMapper[Message] {
-  override def fieldOrder = List(sender,msgBody)
+  override def fieldOrder = List(sender,subject,sentDate,msgBody)
 }
