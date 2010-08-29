@@ -12,6 +12,8 @@ import com.sun.mail.smtp.SMTPMessage
 
 import net.liftweb.common.Logger
 
+import code.model.Message
+
 import java.io.{IOException, InputStream}
 
 object MailServerManager {
@@ -65,6 +67,11 @@ class Handler(ctx: MessageContext) extends MessageHandler with Logger {
     debug("MessageID: " ++ msg.getMessageID())
     debug("Subject: " ++ msg.getSubject())
     debug("Body Size: " ++ (msg.getSize().toString))
+    val msg_entity = Message.create
+    msg_entity msgBody msg.toString()
+    msg_entity sender from
+    msg_entity subject msg.getSubject()
+    msg_entity save
   }
 
   def done {}

@@ -7,6 +7,7 @@ import _root_.net.liftweb.common._
 class Message extends LongKeyedMapper[Message] with IdPK {
   def getSingleton = Message
   object msgBody extends MappedText(this)
+  object subject extends MappedText(this)
   object sender extends MappedEmail(this, 256)
 }
 
