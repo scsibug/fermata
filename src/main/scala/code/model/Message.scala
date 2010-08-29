@@ -14,5 +14,6 @@ class Message extends LongKeyedMapper[Message] with IdPK {
 }
 
 object Message extends Message with LongKeyedMetaMapper[Message] {
+  override def dbTableName = "messages"
   override def fieldOrder = List(sender,subject,sentDate,msgBody)
 }
