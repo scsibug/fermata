@@ -11,6 +11,7 @@ class Message extends LongKeyedMapper[Message] with IdPK {
   object sender extends MappedEmail(this, 256)
   object sentDate extends MappedDateTime(this)
   object messageId extends MappedString(this, 256)
+  object textContent extends MappedText(this)
 }
 
 object Message extends Message with LongKeyedMetaMapper[Message] {

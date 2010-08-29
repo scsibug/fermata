@@ -9,8 +9,11 @@ import org.subethamail.smtp.RejectException
 import org.subethamail.smtp.MessageContext
 
 import com.sun.mail.smtp.SMTPMessage
+import com.sun.mail.smtp.SMTPMessage
+import javax.mail.{Part, Multipart}
 
 import net.liftweb.common.Logger
+
 
 import code.model.Message
 
@@ -65,13 +68,36 @@ class Handler(ctx: MessageContext) extends MessageHandler with Logger {
     msg = new SMTPMessage(null, new ByteArrayInputStream(base))
     info("Message received.")
     debug("All recipients: " ++ (recipients mkString " "))
+
     val msg_entity = Message.create
     msg_entity sender from
     msg_entity subject msg.getSubject()
     msg_entity sentDate (new Date())
     msg_entity messageId msg.getMessageID()
     msg_entity msgBody base
+    msg_entity textContent (getText(msg) getOrElse null)
     msg_entity save
+  }
+
+  def getText(p:Part):Option[String] = {
+    var txtbox : Option[String] = None
+    if (p.isMimeType("text/plain")) {
+      val txt = p.getContent().asInstanceOf[String]
+      if (txt != null) txtbox = Some(txt)
+    } else if (p.isMimeType("multipart/*")) {
+      txtbox = Some("blah")
+      val mp : Multipart = p.getContent().asInstanceOf[Multipart]
+      val range = 0.until(mp.getCount())
+      for (i <- range) {
+        val bp:Part = mp.getBodyPart(i)
+        if (bp.isMimeType("text/plain")) {
+          txtbox = Some(bp.getContent().asInstanceOf[String])
+        } else if (bp.isMimeType("multipart/*")) {
+          txtbox = getText(bp)
+        }
+      }
+    }
+  txtbox
   }
 
   def done {}
