@@ -12,6 +12,7 @@ class FermataProject(info: ProjectInfo) extends DefaultWebProject(info) {
     "junit" % "junit" % "4.5" % "test->default",
     "org.scala-tools.testing" % "specs" % "1.6.2.1" % "test->default",
     "com.h2database" % "h2" % "1.2.138",
-    "org.subethamail" % "subethasmtp" % "3.1.4"
+    "org.subethamail" % "subethasmtp" % "3.1.4",
+    "commons-io" % "commons-io" % "1.4"
   ) ++ super.libraryDependencies
 }

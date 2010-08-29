@@ -14,7 +14,10 @@ import net.liftweb.common.Logger
 
 import code.model.Message
 
-import java.io.{IOException, InputStream}
+import java.io.{IOException, InputStream, ByteArrayInputStream}
+import java.util.Date
+
+import org.apache.commons.io.IOUtils
 
 object MailServerManager {
   var serverMap = new HashMap[String, SMTPServer]
@@ -58,19 +61,16 @@ class Handler(ctx: MessageContext) extends MessageHandler with Logger {
 
   @throws(classOf[IOException])
   def data(data: InputStream) {
-    //var datastr = io.Source.fromInputStream(data).mkString
-    //debug("Data:\n" ++ datastr)
-    msg = new SMTPMessage(null, data)
-    info("Message done.")
-    debug("Message from: " ++ from)
+    val base = IOUtils.toByteArray(data)
+    msg = new SMTPMessage(null, new ByteArrayInputStream(base))
+    info("Message received.")
     debug("All recipients: " ++ (recipients mkString " "))
-    debug("MessageID: " ++ msg.getMessageID())
-    debug("Subject: " ++ msg.getSubject())
-    debug("Body Size: " ++ (msg.getSize().toString))
     val msg_entity = Message.create
-    msg_entity msgBody msg.toString()
     msg_entity sender from
     msg_entity subject msg.getSubject()
+    msg_entity sentDate (new Date())
+    msg_entity messageId msg.getMessageID()
+    msg_entity msgBody base
     msg_entity save
   }
 
