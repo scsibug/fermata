@@ -85,7 +85,6 @@ class Handler(ctx: MessageContext) extends MessageHandler with Logger {
       val txt = p.getContent().asInstanceOf[String]
       if (txt != null) txtbox = Some(txt)
     } else if (p.isMimeType("multipart/*")) {
-      txtbox = Some("blah")
       val mp : Multipart = p.getContent().asInstanceOf[Multipart]
       val range = 0.until(mp.getCount())
       for (i <- range) {
