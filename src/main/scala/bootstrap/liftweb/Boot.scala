@@ -43,9 +43,23 @@ class Boot {
     // where to search snippet
     LiftRules.addToPackages("code")
 
-    // Build SiteMap
+    // Rewrites for messages
+    LiftRules.statelessRewrite.append {
+      // Send requests for /msg/<id> to messages template
+      case RewriteRequest (
+        ParsePath(List("msg",msgId),_,_,_),_,_) => {
+          println(msgId)
+          RewriteResponse("message_detail" :: Nil, Map("msgId" -> msgId))
+        }
+    }
+
+    // Build TopLevel SiteMap
     val entries = List(
       Menu.i("Home") / "index", // the simple way to declare a menu
+      Menu.i("Messages") / "messages",
+      Menu(Loc("Msg", List("message_detail") -> true, "Message Detail", Hidden)),
+      //Menu.i("Addresses") / "addresses",
+      //Menu.i("Configuration") / "config",
 
       // more complex because this menu allows anything in the
       // /static path to be visible
@@ -57,6 +71,7 @@ class Boot {
     // set the sitemap.  Note if you don't want access control for
     // each page, just comment this line out.
     LiftRules.setSiteMap(SiteMap(entries:_*))
+
 
     //Show the spinny image when an Ajax call starts
     LiftRules.ajaxStart =
