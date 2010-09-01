@@ -2,6 +2,7 @@ package code.snippet
 
 import _root_.scala.xml.{NodeSeq, Text}
 import _root_.net.liftweb.util._
+import _root_.net.liftweb.mapper._
 import _root_.net.liftweb.common._
 import _root_.net.liftweb.http.S 
 import _root_.java.util.Date
@@ -18,7 +19,11 @@ class Messages {
        )
   }
 
-  def detail(xhtml: NodeSeq) =
-    <pre>{S.param("msgId")}</pre>
+  def detail(xhtml: NodeSeq) = S.param("msgId") match {
+    case Full(msgid) => 
+      val msg = Message.findAll(By(Message.primaryKeyField, msgid.toLong))
+      <pre>{msg.head.textContent}</pre>
+    case _ => <pre>Error processing message ID</pre>
+  }
 
 }
