@@ -57,15 +57,10 @@ class Boot {
     val entries = List(
       Menu.i("Home") / "index", // the simple way to declare a menu
       Menu.i("Messages") / "messages",
-      Menu(Loc("Msg", List("message_detail") -> true, "Message Detail", Hidden)),
+      Menu(Loc("Msg", List("message_detail") -> true, "Message Detail", Hidden))
       //Menu.i("Addresses") / "addresses",
       //Menu.i("Configuration") / "config",
-
-      // more complex because this menu allows anything in the
-      // /static path to be visible
-      Menu(Loc("Static", Link(List("static"), true, "/static/index"), 
-	       "Static Content"))) :::
-    // the User management menu items
+    ) :::
     User.sitemap
 
     // set the sitemap.  Note if you don't want access control for
