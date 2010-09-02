@@ -1,6 +1,14 @@
 <lift:surround with="default" at="content">
   <h2>Message Detail</h2>
   <p>
-    <lift:Messages.detail />
+    <lift:Messages.detail>
+      <ul>
+        <li>From: <pre><message:sender/></pre> </li>
+        <li>Subject: <pre><message:subject/></pre> </li>
+        <li>Date: <pre><message:sentDate/></pre> </li>
+      </ul>
+      <hr />
+      <pre><message:textContent/></pre>
+    </lift:Messages.detail>
   </p>
 </lift:surround>
