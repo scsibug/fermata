@@ -1,12 +1,11 @@
 <lift:surround with="default" at="content">
   <h2>Welcome to Fermata 𝄐</h2>
   <p>
-    <lift:Messages.list>
+    <lift:Messages.list count="10" orderbysql="id desc">
       <ul>
-        <message:header />
+        <message:latestMessages />
       </ul>
     </lift:Messages.list>
-
   </p>
 </lift:surround>
 
