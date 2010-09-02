@@ -1,7 +1,15 @@
 <lift:surround with="default" at="content">
   <h2>Welcome to Fermata 𝄐</h2>
+
+  <p>Fermata simplifies testing and evaluating the email capabilities of software.</p>
+<ul>
+<li>Any email messages sent here will be saved and displayed.</li>
+<li>Test workflows involving multiple people, without checking someone else's mailbox.</li>
+<li>Verify only the emails that should be sent actually are.</li>
+</ul>
+
   <p>
-    <lift:Messages.list count="10" orderbysql="id desc">
+    <lift:Messages.list count="5" orderbysql="id desc">
       <ul>
         <message:latestMessages />
       </ul>

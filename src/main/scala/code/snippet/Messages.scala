@@ -14,7 +14,7 @@ class Messages {
 
   def list(xhtml: NodeSeq) = {
     val count = S.attr("count", _.toInt) openOr 20
-    val orderbysql = S.attr("orderbysql") openOr "sentDate asc"
+    val orderbysql = S.attr("orderbysql") openOr "sentDate desc"
     val orderQuery:QueryParam[Message] =
       OrderBySql(orderbysql,
                  IHaveValidatedThisSQL("svarghese", "2010-09-01"))
