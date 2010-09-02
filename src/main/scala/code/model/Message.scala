@@ -17,4 +17,15 @@ class Message extends LongKeyedMapper[Message] with IdPK {
 object Message extends Message with LongKeyedMetaMapper[Message] {
   override def dbTableName = "messages"
   override def fieldOrder = List(sender,subject,sentDate,msgBody)
+
+  def getMessageById(id : Long) : Box[Message] = {
+    val msg : List[Message] = Message.findAll(By(Message.primaryKeyField, id))
+    val msgbox = msg match {
+      case Nil => Empty
+      case m :: _ => Full(m)
+    }
+    msgbox
+  }
 }
+
+

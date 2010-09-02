@@ -20,9 +20,10 @@ class Messages {
   }
 
   def detail(xhtml: NodeSeq) = S.param("msgId") match {
-    case Full(msgid) => 
-      val msg = Message.findAll(By(Message.primaryKeyField, msgid.toLong))
-      <pre>{msg.head.textContent}</pre>
+    case Full(msgid) => val msgbox = Message.getMessageById(msgid.toLong)
+                        val msgcontent : String = msgbox.run("No Message Found or No Text Content") 
+                              { (s: String, m: Message) => m.textContent }
+                        <pre>{msgcontent}</pre>
     case _ => <pre>Error processing message ID</pre>
   }
 
