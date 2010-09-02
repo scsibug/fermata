@@ -27,7 +27,8 @@ class Messages {
                            "sender" -> m.sender,
                            "subject" -> m.subject,
                            "sentDate" -> m.sentDate,
-                           "textContent" -> m.textContent)
+                           "textContent" -> m.textContent,
+                           "headers" -> m.getHeaders())
       case _ => <strong>Could not find message</strong>
     }
   }

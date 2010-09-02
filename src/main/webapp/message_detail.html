@@ -3,10 +3,12 @@
   <p>
     <lift:Messages.detail>
       <ul>
-        <li>From: <pre><message:sender/></pre> </li>
-        <li>Subject: <pre><message:subject/></pre> </li>
-        <li>Date: <pre><message:sentDate/></pre> </li>
+        <li>From: <message:sender/></li>
+        <li>Subject: <message:subject/></li>
+        <li>Date: <message:sentDate/></li>
       </ul>
+      <hr />
+      <pre><message:headers/></pre>
       <hr />
       <pre><message:textContent/></pre>
     </lift:Messages.detail>

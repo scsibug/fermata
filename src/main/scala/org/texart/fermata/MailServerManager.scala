@@ -9,7 +9,6 @@ import org.subethamail.smtp.RejectException
 import org.subethamail.smtp.MessageContext
 
 import com.sun.mail.smtp.SMTPMessage
-import com.sun.mail.smtp.SMTPMessage
 import javax.mail.{Part, Multipart}
 
 import net.liftweb.common.Logger
