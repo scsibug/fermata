@@ -1,0 +1,15 @@
+<!DOCTYPE dataset SYSTEM "dataset.dtd">
+<dataset>
+    <table name="messages">
+        <column>id</column>
+        <column>sender</column>
+        <column>subject</column>
+        <column>textcontent</column>
+        <row>
+            <value>1</value>
+            <value>scsibug@imap.cc</value>
+            <value>Hello World</value>
+            <value>This is the message plain/text content.</value>
+        </row>
+    </table>
+</dataset>

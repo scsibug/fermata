@@ -9,8 +9,9 @@ class FermataProject(info: ProjectInfo) extends DefaultWebProject(info) {
     "net.liftweb" %% "lift-webkit" % liftVersion % "compile->default",
     "net.liftweb" %% "lift-mapper" % liftVersion % "compile->default",
     "org.mortbay.jetty" % "jetty" % "6.1.22" % "test->default",
-    "junit" % "junit" % "4.5" % "test->default",
-    "org.scala-tools.testing" % "specs" % "1.6.2.1" % "test->default",
+    "junit" % "junit" % "4.7" % "test->default",
+    "org.scala-tools.testing" % "specs_2.8.0.RC7" % "1.6.5-SNAPSHOT" % "test->default",
+    "org.dbunit" % "dbunit" % "2.4.8" % "test->default",
     "com.h2database" % "h2" % "1.2.138",
     "org.subethamail" % "subethasmtp" % "3.1.4",
     "commons-io" % "commons-io" % "1.4"
