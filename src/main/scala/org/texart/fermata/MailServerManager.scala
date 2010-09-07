@@ -12,6 +12,8 @@ import com.sun.mail.smtp.SMTPMessage
 import javax.mail.{Part, Multipart}
 
 import net.liftweb.common.Logger
+import net.liftweb.actor._
+import code.comet.{MostRecentMail, NewMessage}
 
 
 import code.model.Message
@@ -75,6 +77,7 @@ class Handler(ctx: MessageContext) extends MessageHandler with Logger {
     msg_entity messageId msg.getMessageID()
     msg_entity msgBody base
     msg_entity textContent (getText(msg) getOrElse null)
+    MostRecentMail ! NewMessage(msg_entity)
     msg_entity save
   }
 
