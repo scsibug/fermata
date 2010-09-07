@@ -14,7 +14,7 @@ Connect directly to a production mail server:
 
 Reconfiguring tester's mail clients to a test mail server:
 
-* Requires managing an SMTP server.
+* Requires managing an SMTP server and POP/IMAP, accounts, etc.
 * You now must manage local client mail configuration and troubleshooting.
 * Enterprise-managed clients may not be able to alter their configuration.
 
