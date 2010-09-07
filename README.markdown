@@ -6,23 +6,23 @@ Fermata is an application that makes email testing simple and approachable by no
 Traditional Email Testing Techniques
 ------------------------------------
 
-Most of the methods traditionally used to test mail-sending capabilities have serious drawbacks, especially in an enterprise environment:
+Most of the methods traditionally used to test application mail-sending capabilities have serious drawbacks, especially in an enterprise environment:
 
-Connecting to a production mail server
+Connect directly to a production mail server:
 
 * Risks disrupting and confusing people not involved in testing with spurious mail
 
-Reconfiguring tester's mail clients to a test mail server
+Reconfiguring tester's mail clients to a test mail server:
 
 * Requires managing an SMTP server.
 * You now must manage local client mail configuration and troubleshooting.
 * Enterprise-managed clients may not be able to alter their configuration.
 
-Configuring procmail filters/whitelists to restrict recipients
+Configuring procmail filters/whitelists to restrict recipients:
 
 * Makes exploratory testing difficult
 
-Use of testing mail accounts
+Use testing mail accounts:
 
 * May restrict integration testing of other resources like LDAP servers.
 * Requires coordination with manager of enterprise mail services.
