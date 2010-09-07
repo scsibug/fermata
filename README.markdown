@@ -31,7 +31,7 @@ Use of testing mail accounts
 Status
 ------
 
-This project is in its early days.  Very basic functionality (like receiving and displaying messages) works, but there is much work to be done.
+This project is in its early days.  Very basic functionality (like receiving and displaying messages) works, but there is much yet to be done.
 
 Installation
 ------------
