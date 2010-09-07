@@ -41,6 +41,16 @@ object Message extends Message with LongKeyedMetaMapper[Message] {
     }
     msgbox
   }
+
+  def getLatestMessage() : Box[Message] = {
+    val msg : List[Message] = Message.findAll(OrderBy(Message.primaryKeyField, Descending), MaxRows(1))
+    val msgbox = msg match {
+      case Nil => Empty
+      case m :: _ => Full(m)
+    }
+    msgbox
+  }
+
 }
 
 
