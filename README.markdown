@@ -29,7 +29,7 @@ This project is in its early days.  Very basic functionality (like receiving and
 Installation
 ------------
 
-Install [http://code.google.com/p/simple-build-tool/](sbt) (Simple Build Tool), and run:
+Install [sbt](http://code.google.com/p/simple-build-tool/) (Simple Build Tool), and run:
 
     sbt update
     sbt jetty
@@ -46,9 +46,10 @@ License
 Fermata is distributed under the BSD-3 license, see the file "LICENSE" in the project root directory.
 
 Dependencies include
- * [http://code.google.com/p/subethasmtp/](subethasmtp) (Apache 2.0 license)
- * [http://liftweb.net/](Lift) (Apache 2.0 license)
- * [http://www.scala-lang.org/](Scala) (Scala license (BSD-style))
+
+* [subethasmtp](http://code.google.com/p/subethasmtp/) (Apache 2.0 license)
+* [Lift](http://liftweb.net/) (Apache 2.0 license)
+* [Scala](http://www.scala-lang.org/) (Scala license (BSD-style))
 
 Copyright
 ---------
