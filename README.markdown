@@ -20,7 +20,7 @@ Reconfiguring tester's mail clients to a test mail server:
 
 Configuring procmail filters/whitelists to restrict recipients:
 
-* Makes exploratory testing difficult
+* Makes exploratory testing difficult: Who should receive mail from which addresses?
 
 Use testing mail accounts:
 
