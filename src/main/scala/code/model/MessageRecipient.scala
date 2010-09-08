@@ -11,6 +11,7 @@ class MessageRecipient extends LongKeyedMapper[MessageRecipient] with IdPK {
 }
 
 object MessageRecipient extends MessageRecipient with LongKeyedMetaMapper[MessageRecipient] {
+  override def dbTableName = "messagerecipients"
   def join (rpt : Recipient, msg : Message) =
     this.create.recipient(rpt).message(msg).save
 }
