@@ -17,7 +17,16 @@ class Message extends LongKeyedMapper[Message] with IdPK {
   object sentDate extends MappedDateTime(this)
   object messageId extends MappedString(this, 256)
   object textContent extends MappedText(this)
-  
+  object lazy_recipients extends HasManyThrough(this, Recipient,
+    MessageRecipient, MessageRecipient.recipient, MessageRecipient.message)
+
+  def recipients = MessageRecipient.findAll(By(MessageRecipient.message, this.id)).map(_.recipient.obj.open_!)
+
+  def recipientsPrintable() : String = {
+    val rcpts = recipients.map({x => x.addressIndex.get}).reverse
+    rcpts mkString(", ")
+  }
+
   def getHeaders() : String = {
     val msg = new SMTPMessage(null, new ByteArrayInputStream(msgBody))
     val headers = msg.getAllHeaderLines()
@@ -27,6 +36,7 @@ class Message extends LongKeyedMapper[Message] with IdPK {
     }
     headertext.toString()
   }
+
 }
 
 object Message extends Message with LongKeyedMetaMapper[Message] {
@@ -52,5 +62,3 @@ object Message extends Message with LongKeyedMetaMapper[Message] {
   }
 
 }
-
-

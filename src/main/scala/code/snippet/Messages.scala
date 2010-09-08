@@ -8,6 +8,7 @@ import _root_.net.liftweb.http.S
 import _root_.java.util.Date
 import code.lib._
 import code.model.Message
+import code.model.Recipient
 import Helpers._
 
 class Messages {
@@ -27,13 +28,16 @@ class Messages {
   def detail(xhtml: NodeSeq) = {
     val msgid = S.param("msgId") getOrElse {"0"}
     val message : Box[Message] = Message.getMessageById(msgid.toLong)
+
     message match {
-      case Full(m) => bind("message", xhtml, 
-                           "sender" -> m.sender,
-                           "subject" -> m.subject,
-                           "sentDate" -> m.sentDate,
-                           "textContent" -> m.textContent,
-                           "headers" -> m.getHeaders())
+      case Full(m) => 
+        bind("message", xhtml, 
+          "sender" -> m.sender,
+          "subject" -> m.subject,
+          "sentDate" -> m.sentDate,
+          "textContent" -> m.textContent,
+          "recipients" -> m.recipientsPrintable,
+          "headers" -> m.getHeaders())
       case _ => <strong>Could not find message</strong>
     }
   }

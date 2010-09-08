@@ -17,6 +17,8 @@ import code.comet.{MostRecentMail, NewMessage}
 
 
 import code.model.Message
+import code.model.Recipient
+import code.model.MessageRecipient
 
 import java.io.{IOException, InputStream, ByteArrayInputStream}
 import java.util.Date
@@ -77,8 +79,10 @@ class Handler(ctx: MessageContext) extends MessageHandler with Logger {
     msg_entity messageId msg.getMessageID()
     msg_entity msgBody base
     msg_entity textContent (getText(msg) getOrElse null)
-    MostRecentMail ! NewMessage(msg_entity)
     msg_entity save
+    var recipient_entities = recipients.map({x:String => Recipient.recipientFindOrNew(x)})
+    recipient_entities.map({x:Recipient => x save; MessageRecipient.join(x,msg_entity)})
+    MostRecentMail ! NewMessage(msg_entity)
   }
 
   def getText(p:Part):Option[String] = {

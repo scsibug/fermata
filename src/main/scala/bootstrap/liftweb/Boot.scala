@@ -38,7 +38,8 @@ class Boot {
     // Use Lift's Mapper ORM to populate the database
     // you don't need to use Mapper to use Lift... use
     // any ORM you want
-    Schemifier.schemify(true, Schemifier.infoF _, User, Message)
+    Schemifier.schemify(true, Schemifier.infoF _, User, Message, Recipient,
+                        MessageRecipient)
 
     // where to search snippet
     LiftRules.addToPackages("code")
