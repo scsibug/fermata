@@ -1,0 +1,51 @@
+<!DOCTYPE dataset SYSTEM "dataset.dtd">
+<dataset>
+    <table name="messages">
+        <column>id</column>
+        <column>sender</column>
+        <column>subject</column>
+        <column>textcontent</column>
+        <row>
+            <value>1</value>
+            <value>scsibug@imap.cc</value>
+            <value>Hello World</value>
+            <value>This is the message plain/text content.</value>
+        </row>
+    </table>
+    <table name="recipients">
+      <column>addressindex</column>
+      <column>id</column>
+      <row>
+        <value>test@example.com</value>
+        <value>1</value>
+      </row>
+      <row>
+        <value>test2@example.com</value>
+        <value>2</value>
+      </row>
+      <row>
+        <value>test3@example.com</value>
+        <value>3</value>
+      </row>
+    </table>
+    <table name="messagerecipients">
+        <column>id</column>
+        <column>message</column>
+        <column>recipient</column>
+        <row>
+          <value>1</value>
+          <value>1</value>
+          <value>1</value>
+        </row>
+        <row>
+          <value>2</value>
+          <value>1</value>
+          <value>2</value>
+        </row>
+        <row>
+          <value>3</value>
+          <value>1</value>
+          <value>3</value>
+        </row>
+    </table>
+</dataset>
