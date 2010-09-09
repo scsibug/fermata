@@ -7,6 +7,7 @@ import _root_.net.liftweb.common._
 class Recipient extends LongKeyedMapper[Recipient] with IdPK {
   def getSingleton = Recipient
   object addressIndex extends MappedEmail(this, 256)
+  
 }
 
 object Recipient extends Recipient with LongKeyedMetaMapper[Recipient] {
