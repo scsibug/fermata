@@ -49,8 +49,16 @@ class Boot {
       // Send requests for /msg/<id> to messages template
       case RewriteRequest (
         ParsePath(List("msg",msgId),_,_,_),_,_) => {
-          println(msgId)
           RewriteResponse("message_detail" :: Nil, Map("msgId" -> msgId))
+        }
+    }
+
+    // Rewrites for recipients
+    LiftRules.statelessRewrite.append {
+      // Send requests for /recipient/<id> to messages template
+      case RewriteRequest (
+        ParsePath(List("recipient",rcptId),_,_,_),_,_) => {
+          RewriteResponse("recipient_detail" :: Nil, Map("rcptId" -> rcptId))
         }
     }
 

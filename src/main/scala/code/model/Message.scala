@@ -61,4 +61,8 @@ object Message extends Message with LongKeyedMetaMapper[Message] {
     msgbox
   }
 
+  def getMessagesByRecipient(id : Long) : List[Message] = {
+    MessageRecipient.findAll(By(MessageRecipient.recipient, id)).map(_.message.obj.open_!)
+  }
+
 }
