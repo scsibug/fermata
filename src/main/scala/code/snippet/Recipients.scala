@@ -26,7 +26,7 @@ class Recipients {
     val count = S.attr("count", _.toInt) openOr 100
     bind("recipient", xhtml,
          "messages" -> messages.flatMap(
-           m => <li>{m.subject}</li>
+           m => <li><a href={"/msg/" + m.primaryKeyField}>{m.sender}: {m.subject}</a></li>
          )
     )
   }
