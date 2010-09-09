@@ -30,7 +30,7 @@ class Messages {
     val message : Box[Message] = Message.getMessageById(msgid.toLong)
 
     message match {
-      case Full(m) => 
+      case Full(m) =>
         bind("message", xhtml, 
           "sender" -> m.sender,
           "subject" -> m.subject,

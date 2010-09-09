@@ -3,6 +3,7 @@ package code.model
 import _root_.net.liftweb.mapper._
 import _root_.net.liftweb.util._
 import _root_.net.liftweb.common._
+import _root_.scala.xml.{NodeSeq, Text}
 
 import com.sun.mail.smtp.SMTPMessage
 
@@ -22,9 +23,11 @@ class Message extends LongKeyedMapper[Message] with IdPK {
 
   def recipients = MessageRecipient.findAll(By(MessageRecipient.message, this.id)).map(_.recipient.obj.open_!)
 
-  def recipientsPrintable() : String = {
-    val rcpts = recipients.map({x => x.addressIndex.get}).reverse
-    rcpts mkString(", ")
+  def recipientsPrintable() = {
+    val rlinks = recipients.map({x => val el = <a href={"/recipient/" + x.primaryKeyField}>{x.addressIndex}</a>
+                                      el.asInstanceOf[NodeSeq]
+                                })
+    rlinks.reduceLeft((x,y) => x ++ Text(", ") ++ y)
   }
 
   def getHeaders() : String = {
