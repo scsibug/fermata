@@ -47,6 +47,15 @@ To create a WAR file that can be deployed to Tomcat, use:
 
 and move the resulting WAR file into your webapps directory.
 
+Standalone Operation
+--------------------
+
+An executable "standalone" WAR file is [available as well](http://github.com/scsibug/fermata/wiki).  Simply double-click, or run
+
+    java -jar fermata-X.X-standalone.war
+
+And fermata will start a webserver on port 8080, and an SMTP server on port 2500.
+
 License
 -------
 
