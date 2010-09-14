@@ -14,6 +14,7 @@ class FermataProject(info: ProjectInfo) extends DefaultWebProject(info) {
     "org.dbunit" % "dbunit" % "2.4.8" % "test->default",
     "com.h2database" % "h2" % "1.2.138",
     "org.subethamail" % "subethasmtp" % "3.1.4",
-    "commons-io" % "commons-io" % "1.4"
+    "commons-io" % "commons-io" % "1.4",
+    "org.apache.lucene" % "lucene-core" % "3.0.2"
   ) ++ super.libraryDependencies
 }
