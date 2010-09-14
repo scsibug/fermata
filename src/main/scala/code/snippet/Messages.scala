@@ -14,14 +14,16 @@ import Helpers._
 class Messages {
 
   def list(xhtml: NodeSeq) = {
+    val offset : Long = S.param("offset").map(_.toLong) openOr 0
     val count = S.attr("count", _.toInt) openOr 20
     val orderbysql = S.attr("orderbysql") openOr "sentDate desc"
     val orderQuery:QueryParam[Message] =
       OrderBySql(orderbysql,
                  IHaveValidatedThisSQL("svarghese", "2010-09-01"))
     bind("message", xhtml,
-         "latestMessages" -> Message.findAll(MaxRows(count),orderQuery).flatMap(
-           b => <li><a href={"/msg/" + b.primaryKeyField}>{b.sender}: {b.subject}</a></li>)
+         "latestMessages" -> Message.findAll(
+           MaxRows(count),StartAt(offset),orderQuery).flatMap(
+             b => <li><a href={"/msg/" + b.primaryKeyField}>{b.sender}: {b.subject}</a></li>)
        )
   }
 
