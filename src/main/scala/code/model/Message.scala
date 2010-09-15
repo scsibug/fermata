@@ -45,6 +45,11 @@ class Message extends LongKeyedMapper[Message] with IdPK {
 object Message extends Message with LongKeyedMetaMapper[Message] {
   override def dbTableName = "messages"
   override def fieldOrder = List(sender,subject,sentDate,msgBody)
+  // A descending index on the 'id' column significantly improves
+  // performance on the H2 database with >100,000 messages.  Mapper
+  // doesn't appear to support making those kinds of indexes though.
+  // A workaround is to drop the existing index, and run:
+  // create index messages on messages(id desc);
 
   def getMessageById(id : Long) : Box[Message] = {
     val msg : List[Message] = Message.findAll(By(Message.primaryKeyField, id))
