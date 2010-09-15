@@ -1,10 +1,27 @@
 <lift:surround with="default" at="content">
-  <h2>Recently Received Messages</h2>
-  <p>
-    <lift:Messages.list>
-      <ul>
-        <message:latestMessages />
-      </ul>
-    </lift:Messages.list>
-  </p>
+  <h2>Messages</h2>
+
+<table>
+  <tr>
+    <th>Sender</th>
+    <th>Subject</th>
+    <th>Date</th>
+  </tr>
+  <lift:messages.all>
+    <tr>    
+      <td><a:sender /></td>
+      <td><a:linkedsubject /></td>
+      <td><a:date /></td>
+    </tr>
+  </lift:messages.all>
+</table>
+
+  <div>
+    <lift:messages.paginate>
+      <p><nav:records/></p>
+      <nav:first /> | <nav:prev/> | <nav:next/> | <nav:last />
+    </lift:messages.paginate>
+  </div>
+
+
 </lift:surround>

@@ -19,12 +19,14 @@
 -->
 
 <h3>Recent Messages</h3>
-  <p>
-    <lift:Messages.list count="5" orderbysql="id desc">
-      <ul>
-        <message:latestMessages />
-      </ul>
-    </lift:Messages.list>
-  </p>
+
+<p>
+  <ul>
+    <lift:Messages.top count="10">
+      <li><a:sender />: <a:linkedsubject/></li>
+    </lift:Messages.top>
+  </ul>
+</p>
+
 </lift:surround>
 

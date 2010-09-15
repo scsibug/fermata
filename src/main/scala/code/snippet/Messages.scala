@@ -4,27 +4,59 @@ import _root_.scala.xml.{NodeSeq, Text}
 import _root_.net.liftweb.util._
 import _root_.net.liftweb.mapper._
 import _root_.net.liftweb.common._
-import _root_.net.liftweb.http.S 
+import _root_.net.liftweb.http.S
+import net.liftweb.http.{S,DispatchSnippet,Paginator,PaginatorSnippet,  
+  SortedPaginator,SortedPaginatorSnippet}
+import net.liftweb.mapper.view.{SortedMapperPaginatorSnippet,SortedMapperPaginator}
 import _root_.java.util.Date
 import code.lib._
 import code.model.Message
 import code.model.Recipient
 import Helpers._
+import S.?
 
-class Messages {
+class Messages extends DispatchSnippet {
 
-  def list(xhtml: NodeSeq) = {
-    val offset : Long = S.param("offset").map(_.toLong) openOr 0
+  override def dispatch = {
+    case "all" => all _
+    case "top" => top _ 
+    case "paginate" => paginator.paginate _
+    case "detail" => detail _
+  }
+
+  val paginator = new SortedMapperPaginatorSnippet(Message,Message.id, "ID" -> Message.id){
+    override def itemsPerPage = 20
+    _sort = (0,false)
+    override def prevXml: NodeSeq = Text(?("Prev"))
+    override def nextXml: NodeSeq = Text(?("Next"))
+    override def firstXml: NodeSeq = Text(?("First"))
+    override def lastXml: NodeSeq = Text(?("Last"))
+  }
+
+  protected def many(messages: List[Message], xhtml: NodeSeq): NodeSeq = 
+    messages.flatMap(a => single(a,xhtml))
+
+  protected def single(msg: Message, xhtml: NodeSeq): NodeSeq =
+    bind("a", xhtml,
+      "sender" -> msg.sender,
+      "subject" -> msg.subject,
+      "date" -> msg.sentDate,
+      "linkedsubject" -%> <a href={"/msg/"+msg.primaryKeyField}>{msg.subject}</a>
+    )
+    
+  // Display all entries the paginator returns
+  def all(xhtml: NodeSeq): NodeSeq = many(paginator.page,xhtml)
+
+
+  // Show pagination links
+  def paginate(xhtml: NodeSeq) {
+    paginator.paginate(xhtml)
+  }
+
+  // Show most recent, no pagination offsets
+  def top(xhtml: NodeSeq) = {
     val count = S.attr("count", _.toInt) openOr 20
-    val orderbysql = S.attr("orderbysql") openOr "sentDate desc"
-    val orderQuery:QueryParam[Message] =
-      OrderBySql(orderbysql,
-                 IHaveValidatedThisSQL("svarghese", "2010-09-01"))
-    bind("message", xhtml,
-         "latestMessages" -> Message.findAll(
-           MaxRows(count),StartAt(offset),orderQuery).flatMap(
-             b => <li><a href={"/msg/" + b.primaryKeyField}>{b.sender}: {b.subject}</a></li>)
-       )
+    many(Message.findAll(MaxRows(count), OrderBy(Message.id, Descending)),xhtml)
   }
 
   def detail(xhtml: NodeSeq) = {
