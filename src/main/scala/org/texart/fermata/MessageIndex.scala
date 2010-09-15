@@ -10,7 +10,9 @@ import java.io.File
 
 object MessageIndex extends LiftActor {
   var index : IndexWriter = {
-    val dir = new SimpleFSDirectory(new File("."))
+    val index_dir = new File("fermata_index")
+    index_dir mkdir
+    val dir = new SimpleFSDirectory(index_dir)
     val analyzer = new StandardAnalyzer(LUCENE_30)
     new IndexWriter(dir, analyzer, IndexWriter.MaxFieldLength.UNLIMITED)
   }
