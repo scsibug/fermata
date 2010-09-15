@@ -72,7 +72,7 @@ class Messages extends DispatchSnippet {
           "textContent" -> m.textContent,
           "recipients" -> m.recipientsPrintable,
           "headers" -> m.getHeaders())
-      case _ => <strong>Could not find message</strong>
+      case _ => <strong>{?("Could not find message")}</strong>
     }
   }
 }
