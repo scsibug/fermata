@@ -47,7 +47,6 @@ class Messages extends DispatchSnippet {
   // Display all entries the paginator returns
   def all(xhtml: NodeSeq): NodeSeq = many(paginator.page,xhtml)
 
-
   // Show pagination links
   def paginate(xhtml: NodeSeq) {
     paginator.paginate(xhtml)
