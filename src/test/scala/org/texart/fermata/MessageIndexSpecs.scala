@@ -11,16 +11,15 @@ import code.model.{Message}
 class MessageIndexSpecsAsTest extends JUnit4(MessageIndexSpecs)
 
 object MessageIndexSpecs extends Specification{
-	    "MessageIndex" should {
-        doFirst {
-            DBUtil.initialize
-            Schemifier.schemify(true, Schemifier.infoF _, Message)
-            DBUtil.setupDB("dbunit/simple_message.xml")
-			
-        }
-		"search the index for message" in {
-			var results = MessageIndex search "content"
-			(results.length == 1) must beTrue
-		}
-	}	
+  "MessageIndex" should {
+    doFirst {
+      DBUtil.initialize
+      Schemifier.schemify(true, Schemifier.infoF _, Message)
+      DBUtil.setupDB("dbunit/simple_message.xml")
+    }
+    "search the index for message" in {
+      var results = MessageIndex search "content"
+        (results.length == 1) must beTrue
+    }
+  }	
 }
