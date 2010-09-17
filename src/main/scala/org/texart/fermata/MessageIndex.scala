@@ -42,23 +42,10 @@ object MessageIndex extends LiftActor with Logger {
   }
 
   def indexMessage(msg: Message) = {
-    val doc : Document = new Document()
-    val idField : Field =
-      new Field("id",
-                msg.id.toString,
-                Field.Store.YES,
-                Field.Index.NO)
-    val textContentField : Field =
-      new Field("textcontent",
-                msg.textContent,
-                Field.Store.YES,
-                Field.Index.ANALYZED)
-    doc.add(idField)
-    doc.add(textContentField)
-    index addDocument doc
+    index addDocument (msg.toDocument)
     index commit
   }
-  
+
   def reindex() {
     info("Starting reindex")
     val msgs : List[Message] = Message.findAll()

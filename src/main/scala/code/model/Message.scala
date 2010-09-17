@@ -4,7 +4,7 @@ import _root_.net.liftweb.mapper._
 import _root_.net.liftweb.util._
 import _root_.net.liftweb.common._
 import _root_.scala.xml.{NodeSeq, Text}
-
+import org.apache.lucene.document.{Document,Field}
 import com.sun.mail.smtp.SMTPMessage
 
 import java.io.{IOException, InputStream, ByteArrayInputStream}
@@ -38,6 +38,24 @@ class Message extends LongKeyedMapper[Message] with IdPK {
       headertext.append(headers.nextElement()).append("\n")
     }
     headertext.toString()
+  }
+
+  def toDocument(): Document = {
+    val doc = new Document
+    doc.add(mkField(id,id.toString,true,false))
+    doc.add(mkField(textContent,textContent,true,true))
+    doc.add(mkField(subject,subject,true,true))
+    doc.add(mkField(sender,sender,true,true))
+    def mkField[A,B <: net.liftweb.mapper.Mapper[B]](
+        name: MappedField[A,B],
+        value: String,
+        store: Boolean,
+        searchable: Boolean): Field = {
+      val fieldStore = if (store) Field.Store.YES else Field.Store.NO
+      val indexed = if (searchable) Field.Index.ANALYZED else Field.Index.NO
+      new Field(name.dbColumnName,value,fieldStore,indexed)
+    }
+    doc
   }
 
 }
