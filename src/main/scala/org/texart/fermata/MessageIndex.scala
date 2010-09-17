@@ -12,16 +12,12 @@ import code.comet.{NewMessage}
 import code.model.Message
 import java.io.File
 
-
-
-object MessageIndex extends LiftActor with Logger {
+class MessageIndex extends LiftActor with Logger {
   var analyzer = new SnowballAnalyzer(LUCENE_30, "English")
   var index : IndexWriter = {
     val dir = new RAMDirectory()
     new IndexWriter(dir, analyzer, IndexWriter.MaxFieldLength.UNLIMITED)
   }
-
-  reindex
 
   override def messageHandler : PartialFunction[Any, Unit] = {
     case NewMessage(msg: Message) => {
@@ -55,4 +51,8 @@ object MessageIndex extends LiftActor with Logger {
     info("Total documents indexed = "+index.numDocs)
   }
 
+}
+
+object MessageIndex extends MessageIndex {
+  reindex
 }
