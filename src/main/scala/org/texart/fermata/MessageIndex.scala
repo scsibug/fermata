@@ -28,17 +28,17 @@ object MessageIndex extends LiftActor with Logger {
     }
   }
 
-  def search(querystr : String) : Iterator[Message] = {
+  def search(querystr: String, max: Int) : List[Message] = {
     val searcher = new IndexSearcher(index.getReader())
     val parser = new QueryParser(LUCENE_30, "textcontent", analyzer)
     val query = parser.parse(querystr)
-    val hits = searcher.search(query, null, 10).scoreDocs;
+    val hits = searcher.search(query, null, max).scoreDocs;
     info("Query found " + hits.length + " hits")
     val documents = hits.map({r => searcher.doc(r.doc)})
     searcher.close
 
     val msgsbox = documents.map({d => Message.getMessageById(d.get("id").toLong)})
-    msgsbox.iterator.filter(!_.isEmpty).map(_.open_!)
+    msgsbox.iterator.filter(!_.isEmpty).map(_.open_!).toList
   }
 
   def indexMessage(msg: Message) = {
