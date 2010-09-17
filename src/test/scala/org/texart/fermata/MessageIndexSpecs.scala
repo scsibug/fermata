@@ -21,7 +21,6 @@ object MessageIndexSpecs extends Specification{
     "find a message in the index" in {
       var results = MessageIndex search("content", 10)
       (results.length >= 1) must beTrue
-
     }
 
     "return no more results than requested" in {
@@ -30,8 +29,9 @@ object MessageIndexSpecs extends Specification{
     }
 
     "find a string only when it appears" in {
-      var results = MessageIndex search("content", 2)
-      (results.length == 2) must beTrue
+      var results = MessageIndex search("quick", 2)
+      (results.length == 1) must beTrue
+      results.head.id.get must be equalTo(3)
     }
 
     "find nothing for keywords that are absent in corpus" in {
@@ -40,13 +40,20 @@ object MessageIndexSpecs extends Specification{
     }
     
     "perform derivation to find more results" in {
-      //var results = MessageIndex search("searched", 10)
-      //(results.length >= 1) must beTrue
+      var results = MessageIndex search("searched", 10)
+      (results.length >= 1) must beTrue
+      results.head.id.get must be equalTo(4)
     }
 
     "perform stemming to find more results" in {
-      //var results = MessageIndex search("fish", 10)
-      //(results.length >= 1) must beTrue
+      var results = MessageIndex search("fish", 10)
+      (results.length >= 1) must beTrue
+      results.head.id.get must be equalTo(4)
+    }
+
+    "search case-insensitively" in {
+      var results = MessageIndex search("MESSAGE", 10)
+      (results.length >= 1) must beTrue
     }
 
   }	

@@ -40,6 +40,7 @@ class Message extends LongKeyedMapper[Message] with IdPK {
     headertext.toString()
   }
 
+  // Convert to a Lucene Document for indexing
   def toDocument(): Document = {
     val doc = new Document
     doc.add(mkField(id,id.toString,true,false))

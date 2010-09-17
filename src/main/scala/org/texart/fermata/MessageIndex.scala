@@ -1,7 +1,7 @@
 package org.texart.fermata
 import org.apache.lucene.index.{IndexWriter}
 import org.apache.lucene.store.{SimpleFSDirectory,RAMDirectory}
-import org.apache.lucene.analysis.standard.{StandardAnalyzer}
+import org.apache.lucene.analysis.snowball.{SnowballAnalyzer}
 import org.apache.lucene.util.Version.{LUCENE_30}
 import org.apache.lucene.queryParser.{QueryParser}
 import org.apache.lucene.search.{IndexSearcher}
@@ -13,8 +13,9 @@ import code.model.Message
 import java.io.File
 
 
+
 object MessageIndex extends LiftActor with Logger {
-  var analyzer = new StandardAnalyzer(LUCENE_30)
+  var analyzer = new SnowballAnalyzer(LUCENE_30, "English")
   var index : IndexWriter = {
     val dir = new RAMDirectory()
     new IndexWriter(dir, analyzer, IndexWriter.MaxFieldLength.UNLIMITED)
@@ -55,4 +56,3 @@ object MessageIndex extends LiftActor with Logger {
   }
 
 }
-
