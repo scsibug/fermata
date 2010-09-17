@@ -12,47 +12,59 @@ import code.comet.{NewMessage}
 import code.model.Message
 import java.io.File
 
-
-
-object MessageIndex extends LiftActor with Logger {
+class MessageIndex extends LiftActor with Logger {
   var analyzer = new SnowballAnalyzer(LUCENE_30, "English")
-  var index : IndexWriter = {
+
+  var indexw : IndexWriter = {
     val dir = new RAMDirectory()
     new IndexWriter(dir, analyzer, IndexWriter.MaxFieldLength.UNLIMITED)
   }
 
-  reindex
-
   override def messageHandler : PartialFunction[Any, Unit] = {
-    case NewMessage(msg: Message) => {
-      println("got new msg")
-    }
+    case NewMessage(msg: Message) => indexMessage(msg)
+    case DoIndex => reply(this.doIndex())
   }
 
   def search(querystr: String, max: Int) : List[Message] = {
-    val searcher = new IndexSearcher(index.getReader())
+    val searcher = new IndexSearcher(indexw.getReader())
     val parser = new QueryParser(LUCENE_30, "textcontent", analyzer)
     val query = parser.parse(querystr)
     val hits = searcher.search(query, null, max).scoreDocs;
     info("Query found " + hits.length + " hits")
     val documents = hits.map({r => searcher.doc(r.doc)})
-    searcher.close
-
     val msgsbox = documents.map({d => Message.getMessageById(d.get("id").toLong)})
-    msgsbox.iterator.filter(!_.isEmpty).map(_.open_!).toList
+    val results = msgsbox.iterator.filter(!_.isEmpty).map(_.open_!).toList
+    searcher.close
+    results
   }
 
   def indexMessage(msg: Message) = {
-    index addDocument (msg.toDocument)
-    index commit
+    indexMessageQuickly(msg)
+    indexw commit
   }
 
-  def reindex() {
-    info("Starting reindex")
+  // Don't commit these documents immediately after indexing
+  def indexMessageQuickly(msg: Message) = {
+    indexw addDocument (msg.toDocument)
+  }
+
+  def doIndex() : Int = {
+    info("Starting index of all Messages")
     val msgs : List[Message] = Message.findAll()
-    msgs.map({indexMessage(_)})
-    info("Reindex completed")
-    info("Total documents indexed = "+index.numDocs)
+    msgs.map({indexMessageQuickly(_)})
+    indexw.commit
+    info("index built")
+    indexw.optimize()
+    info("index optimized")
+    info("Total messages indexed = "+indexw.numDocs)
+    indexw.numDocs
   }
 
+}
+
+case class DoIndex()
+
+object MessageIndex extends MessageIndex {
+  //ensure that an index is built (asynchronously)
+  this ! DoIndex
 }

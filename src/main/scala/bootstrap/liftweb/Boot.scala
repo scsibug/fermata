@@ -12,7 +12,7 @@ import mapper._
 
 import code.model._
 
-import org.texart.fermata.MailServerManager
+import org.texart.fermata.{MessageIndex,MailServerManager}
 
 /**
  * A class that's instantiated early and run.  It allows the application
@@ -34,6 +34,8 @@ class Boot {
 
     // Start a default mail server
     MailServerManager.startServer("default",2500)
+    // Ping the indexer, so that it starts up immediately
+    MessageIndex ! None
 
     // Use Lift's Mapper ORM to populate the database
     // you don't need to use Mapper to use Lift... use
