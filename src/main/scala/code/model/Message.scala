@@ -54,7 +54,8 @@ class Message extends LongKeyedMapper[Message] with IdPK {
         searchable: Boolean): Field = {
       val fieldStore = if (store) Field.Store.YES else Field.Store.NO
       val indexed = if (searchable) Field.Index.ANALYZED else Field.Index.NO
-      new Field(name.dbColumnName,value,fieldStore,indexed)
+      val valNoNull = if (value==null) "" else value
+      new Field(name.dbColumnName,valNoNull,fieldStore,indexed)
     }
     doc
   }
