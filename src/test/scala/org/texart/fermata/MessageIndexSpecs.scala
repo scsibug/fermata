@@ -15,11 +15,39 @@ object MessageIndexSpecs extends Specification{
     doFirst {
       DBUtil.initialize
       Schemifier.schemify(true, Schemifier.infoF _, Message)
-      DBUtil.setupDB("dbunit/simple_message.xml")
+      DBUtil.setupDB("dbunit/search_messages.xml")
     }
-    "search the index for message" in {
-      var results = MessageIndex search "content"
-        (results.length == 1) must beTrue
+
+    "find a message in the index" in {
+      var results = MessageIndex search("content", 10)
+      (results.length >= 1) must beTrue
+
     }
+
+    "return no more results than requested" in {
+      var results = MessageIndex search("content", 2)
+      (results.length <= 2) must beTrue
+    }
+
+    "find a string only when it appears" in {
+      var results = MessageIndex search("content", 2)
+      (results.length == 2) must beTrue
+    }
+
+    "find nothing for keywords that are absent in corpus" in {
+      var results = MessageIndex search("absent",10)
+      (results.length == 0) must beTrue
+    }
+    
+    "perform derivation to find more results" in {
+      //var results = MessageIndex search("searched", 10)
+      //(results.length >= 1) must beTrue
+    }
+
+    "perform stemming to find more results" in {
+      //var results = MessageIndex search("fish", 10)
+      //(results.length >= 1) must beTrue
+    }
+
   }	
 }
