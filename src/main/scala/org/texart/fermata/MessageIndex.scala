@@ -62,8 +62,6 @@ class MessageIndex extends LiftActor with Logger {
 
 }
 
-case class DoIndex()
-
 object MessageIndex extends MessageIndex {
   //ensure that an index is built (asynchronously)
   this ! DoIndex
