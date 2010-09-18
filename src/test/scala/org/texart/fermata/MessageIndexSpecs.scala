@@ -11,16 +11,22 @@ import code.model.{Message}
 class MessageIndexSpecsAsTest extends JUnit4(MessageIndexSpecs)
 
 object MessageIndexSpecs extends Specification{
-
+  val mailServerPort = 2500
+  val mailServerName = "test"
   val idx : MessageIndex = new MessageIndex()
+  val mailer = new Mailer(mailServerPort)
 
   "MessageIndex" should {
     doFirst {
       DBUtil.initialize
       Schemifier.schemify(true, Schemifier.infoF _, Message)
       DBUtil.setupDB("dbunit/search_messages.xml")
+      MessageIndex !? DoIndex
+      MailServerManager.startServer(mailServerName,mailServerPort)
     }
-
+    doLast {
+      MailServerManager.stopServer(mailServerName)
+    }
     doBefore {
       idx !? DoIndex
     }
@@ -67,6 +73,16 @@ object MessageIndexSpecs extends Specification{
     "reindex correct number of documents" in {
       val mi = new MessageIndex()
       (mi !? DoIndex) must be equalTo(5)
+    }
+
+    "index mail as it is recieved" in {
+      // sending mail will be received by the MessageIndex companion obj.
+      var orig_count = MessageIndex.indexedMailCount
+      mailer.sendMsg("New message","new!",List("new@example.com"),"new@example.com")
+      // message indexing is asynch, so we must wait
+      Thread.sleep(100)
+      var new_count = MessageIndex.indexedMailCount
+      new_count must be equalTo(orig_count + 1)
     }
 
   }	
