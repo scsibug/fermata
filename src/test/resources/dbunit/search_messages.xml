@@ -1,0 +1,39 @@
+<!DOCTYPE dataset SYSTEM "dataset.dtd">
+<dataset>
+    <table name="messages">
+        <column>id</column>
+        <column>sender</column>
+        <column>subject</column>
+        <column>textcontent</column>
+        <row>
+            <value>1</value>
+            <value>scsibug@imap.cc</value>
+            <value>Plain text</value>
+            <value>This is the message plain/text content.</value>
+        </row>
+        <row>
+            <value>2</value>
+            <value>joe@example.com</value>
+            <value>Another message</value>
+            <value>Another message, that also includes the term content.</value>
+        </row>
+        <row>
+            <value>3</value>
+            <value>aoeu@example.com</value>
+            <value>Sample</value>
+            <value>The quick brown fox jumps over the lazy dog</value>
+        </row>
+        <row>
+            <value>4</value>
+            <value>scsibug@imap.cc</value>
+            <value>Stemming</value>
+            <value>Testing stemming fished bicycled jumped search</value>
+        </row>
+        <row>
+            <value>5</value>
+            <value>scsibug@imap.cc</value>
+            <value>Haiku</value>
+            <value>This has an interesting word in the subject</value>
+        </row>
+    </table>
+</dataset>
