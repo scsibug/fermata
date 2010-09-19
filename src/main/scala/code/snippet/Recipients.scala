@@ -4,13 +4,23 @@ import _root_.scala.xml.{NodeSeq, Text}
 import _root_.net.liftweb.util._
 import _root_.net.liftweb.mapper._
 import _root_.net.liftweb.common._
-import _root_.net.liftweb.http.S 
+import net.liftweb.http.{S,DispatchSnippet,Paginator,PaginatorSnippet,  
+  SortedPaginator,SortedPaginatorSnippet}
+import net.liftweb.mapper.view.{SortedMapperPaginatorSnippet,SortedMapperPaginator}
 import code.lib._
 import code.model.Recipient
 import code.model.Message
 import Helpers._
+import S.?
 
-class Recipients {
+class Recipients extends DispatchSnippet {
+
+  override def dispatch = {
+    case "listMessages" =>  listMessages _
+    case "list" =>  list _
+    case "address" => address _
+  }
+
   def list(xhtml: NodeSeq) = {
     val count = S.attr("count", _.toInt) openOr 20
     bind("recipients", xhtml,

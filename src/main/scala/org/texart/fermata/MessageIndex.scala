@@ -59,7 +59,7 @@ class MessageIndex extends LiftActor with Logger {
     info("Total messages indexed = "+indexw.numDocs)
     indexw.numDocs
   }
-  
+
   def indexedMailCount : Int = indexw.numDocs
 
 }
