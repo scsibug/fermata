@@ -27,7 +27,7 @@ class MessageIndex extends LiftActor with Logger {
 
   def search(querystr: String, max: Int) : List[Message] = {
     val searcher = new IndexSearcher(indexw.getReader())
-    val parser = new QueryParser(LUCENE_30, "textcontent", analyzer)
+    val parser = new QueryParser(LUCENE_30, "all", analyzer)
     val query = parser.parse(querystr)
     val hits = searcher.search(query, null, max).scoreDocs;
     info("Query found " + hits.length + " hits")

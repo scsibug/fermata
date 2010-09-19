@@ -65,8 +65,13 @@ object MessageIndexSpecs extends Specification{
       results.head.id.get must be equalTo(4)
     }
 
+    "search in subject" in {
+      var results = idx search("haiku", 10)
+      (results.length == 1) must beTrue
+    }
+
     "search case-insensitively" in {
-      var results = idx search("MESSAGE", 10)
+      var results = idx search("STEMMING", 10)
       (results.length >= 1) must beTrue
     }
 
@@ -79,7 +84,7 @@ object MessageIndexSpecs extends Specification{
       // sending mail will be received by the MessageIndex companion obj.
       var orig_count = MessageIndex.indexedMailCount
       mailer.sendMsg("New message","new!",List("new@example.com"),"new@example.com")
-      // message indexing is asynch, so we must wait
+      // message indexing is asynch, so we must wait for indexing.
       Thread.sleep(100)
       var new_count = MessageIndex.indexedMailCount
       new_count must be equalTo(orig_count + 1)

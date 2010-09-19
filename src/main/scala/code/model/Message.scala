@@ -31,11 +31,13 @@ class Message extends LongKeyedMapper[Message] with IdPK {
   }
 
   def getHeaders() : String = {
-    val msg = new SMTPMessage(null, new ByteArrayInputStream(msgBody))
-    val headers = msg.getAllHeaderLines()
-    val headertext = new StringBuilder()
-    while(headers.hasMoreElements()) {
-      headertext.append(headers.nextElement()).append("\n")
+    val headertext = new StringBuilder()    
+    if (msgBody.get != null) {
+      val msg = new SMTPMessage(null, new ByteArrayInputStream(msgBody))
+      val headers = msg.getAllHeaderLines()
+      while(headers.hasMoreElements()) {
+        headertext.append(headers.nextElement()).append("\n")
+      }
     }
     headertext.toString()
   }
@@ -57,9 +59,22 @@ class Message extends LongKeyedMapper[Message] with IdPK {
       val valNoNull = if (value==null) "" else value
       new Field(name.dbColumnName,valNoNull,fieldStore,indexed)
     }
+    doc.add(new Field("all",allFieldsToText,Field.Store.NO,Field.Index.ANALYZED))
     doc
   }
 
+  def allFieldsToText(): String = {
+    
+    val all = new StringBuffer()
+    all.append(textContent).append("\n")
+    all.append(subject).append("\n")
+    all.append(sender).append("\n")
+    all.append(getHeaders).append("\n")
+    recipients.map({r =>
+      all.append(r).append("\n")
+                  })
+    all.toString()
+  }
 }
 
 object Message extends Message with LongKeyedMetaMapper[Message] {
