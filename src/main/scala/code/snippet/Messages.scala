@@ -21,6 +21,7 @@ class Messages extends DispatchSnippet {
     case "all" => all _
     case "top" => top _ 
     case "paginate" => paginator.paginate _
+
     case "detail" => detail _
   }
 

@@ -1,11 +1,23 @@
  <lift:surround with="default" at="content">
   <h2>Message Recipients</h2>
-  <p>
-    <lift:Recipients.list>
-      <ul>
-        <recipients:latest />
-      </ul>
-    </lift:Recipients.list>
-  </p>
+
+<table>
+  <tr>
+    <th>Recipient</th>
+  </tr>
+  <lift:recipients.all>
+    <tr>    
+      <td><a:linkedaddress /></td>
+    </tr>
+  </lift:recipients.all>
+</table>
+
+  <div>
+    <lift:recipients.paginate>
+      <p><nav:records/></p>
+      <nav:first /> | <nav:prev/> | <nav:next/> | <nav:last />
+    </lift:recipients.paginate>
+  </div>
+
 </lift:surround>
 
