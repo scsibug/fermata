@@ -1,0 +1,25 @@
+<lift:surround with="default" at="content">
+  <h2>Search Messages</h2>
+  
+  <lift:Search.search form="GET">
+    <search:query /><br />
+    <search:submit />
+  </lift:Search.search>
+    <hr />
+
+    <table>
+      <tr>
+        <th>Sender</th>
+        <th>Subject</th>
+        <th>Date</th>
+      </tr>
+
+      <lift:Search:results>
+        <tr>    
+          <td><a:sender /></td>
+          <td><a:linkedsubject /></td>
+          <td><a:date /></td>
+        </tr>
+      </lift:Search:results>
+    </table>
+</lift:surround>

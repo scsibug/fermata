@@ -70,6 +70,7 @@ class Boot {
       Menu.i("Messages") / "messages",
       Menu(Loc("Msg", List("message_detail") -> true, "Message Detail", Hidden)),
       Menu.i("Recipients") / "recipients",
+      Menu.i("Search") / "search",
       Menu(Loc("Rcpts", List("recipient_detail") -> true, "Recipient Detail", Hidden))
       //Menu.i("Addresses") / "addresses",
       //Menu.i("Configuration") / "config",
