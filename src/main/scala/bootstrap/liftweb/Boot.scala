@@ -73,8 +73,7 @@ class Boot {
       Menu(Loc("Rcpts", List("recipient_detail") -> true, "Recipient Detail", Hidden))
       //Menu.i("Addresses") / "addresses",
       //Menu.i("Configuration") / "config",
-    ) :::
-    User.sitemap
+    )
 
     // set the sitemap.  Note if you don't want access control for
     // each page, just comment this line out.
