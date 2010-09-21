@@ -75,6 +75,11 @@ object MessageIndexSpecs extends Specification{
       (results.length >= 1) must beTrue
     }
 
+    "allow badly-formed queries" in {
+      var results = idx search("STEMMING!", 10)
+      (results.length >= 1) must beTrue
+    }
+
     "reindex correct number of documents" in {
       val mi = new MessageIndex()
       (mi !? DoIndex) must be equalTo(5)

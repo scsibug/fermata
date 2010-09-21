@@ -3,8 +3,8 @@ import org.apache.lucene.index.{IndexWriter}
 import org.apache.lucene.store.{SimpleFSDirectory,RAMDirectory}
 import org.apache.lucene.analysis.snowball.{SnowballAnalyzer}
 import org.apache.lucene.util.Version.{LUCENE_30}
-import org.apache.lucene.queryParser.{QueryParser}
-import org.apache.lucene.search.{IndexSearcher}
+import org.apache.lucene.queryParser.{QueryParser,ParseException}
+import org.apache.lucene.search.{IndexSearcher,Query}
 import org.apache.lucene.document.{Document,Field}
 import net.liftweb.actor._
 import net.liftweb.common.Logger
@@ -28,7 +28,12 @@ class MessageIndex extends LiftActor with Logger {
   def search(querystr: String, max: Int) : List[Message] = {
     val searcher = new IndexSearcher(indexw.getReader())
     val parser = new QueryParser(LUCENE_30, "all", analyzer)
-    val query = parser.parse(querystr)
+    var query = null.asInstanceOf[Query]
+    try {
+      query = parser.parse(querystr)
+    } catch {
+      case e:ParseException => query = parser.parse(QueryParser.escape(querystr))
+    }
     val hits = searcher.search(query, null, max).scoreDocs;
     info("Query found " + hits.length + " hits")
     val documents = hits.map({r => searcher.doc(r.doc)})
