@@ -8,26 +8,31 @@ import code.util.DBUtil
 import org.specs.Specification
 import org.specs.runner.JUnit4
 import code.model.{Message}
+
+import com.google.inject._
+import com.google._
+
 class MessageIndexSpecsAsTest extends JUnit4(MessageIndexSpecs)
 
 object MessageIndexSpecs extends Specification{
+
   val mailServerPort = 2500
   val mailServerName = "test"
-  val idx : MessageIndex = new MessageIndex()
-  val mailer = new Mailer(mailServerPort)
 
   "MessageIndex" should {
+
+    val inj = Guice.createInjector(new MessageModule())
+    var idx = inj.getInstance(classOf[MessageIndexService])
+    val mailer = new Mailer(mailServerPort)
+
     doFirst {
       DBUtil.initialize
       Schemifier.schemify(true, Schemifier.infoF _, Message)
       DBUtil.setupDB("dbunit/search_messages.xml")
-      MessageIndex !? DoIndex
-      MailServerManager.startServer(mailServerName,mailServerPort)
     }
-    doLast {
-      MailServerManager.stopServer(mailServerName)
-    }
+
     doBefore {
+      // always index before doing searches
       idx !? DoIndex
     }
 
@@ -86,13 +91,15 @@ object MessageIndexSpecs extends Specification{
     }
 
     "index mail as it is recieved" in {
-      // sending mail will be received by the MessageIndex companion obj.
-      var orig_count = MessageIndex.indexedMailCount
+      var orig_count = idx.indexedMailCount
+      var mailServerManager = inj.getInstance(classOf[MailServerManagerService])
+      mailServerManager.startServer(mailServerName,mailServerPort)
       mailer.sendMsg("New message","new!",List("new@example.com"),"new@example.com")
       // message indexing is asynch, so we must wait for indexing.
       Thread.sleep(100)
-      var new_count = MessageIndex.indexedMailCount
+      var new_count = idx.indexedMailCount
       new_count must be equalTo(orig_count + 1)
+      mailServerManager.stopServer(mailServerName)
     }
 
   }	

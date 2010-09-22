@@ -12,7 +12,10 @@ import mapper._
 
 import code.model._
 
-import org.texart.fermata.{MessageIndex,MailServerManager}
+import com.google.inject._
+import com.google._
+
+import org.texart.fermata.{MessageModule,MessageIndex,MailServerManagerService}
 
 /**
  * A class that's instantiated early and run.  It allows the application
@@ -20,6 +23,8 @@ import org.texart.fermata.{MessageIndex,MailServerManager}
  */
 class Boot {
   def boot {
+    val inj = Guice.createInjector(new MessageModule())
+
     if (!DB.jndiJdbcConnAvailable_?) {
       val vendor = 
 	new StandardDBVendor(Props.get("db.driver") openOr "org.h2.Driver",
@@ -33,9 +38,11 @@ class Boot {
     }
 
     // Start a default mail server
-    MailServerManager.startServer("default",2500)
+    val mailServerMgr = inj.getInstance(classOf[MailServerManagerService])
+    mailServerMgr.startServer("default",2500)
     // Ping the indexer, so that it starts up immediately
-    MessageIndex ! None
+    val msgIdx = inj.getInstance(classOf[MessageIndexService])
+    msgIdx ! None
 
     // Use Lift's Mapper ORM to populate the database
     // you don't need to use Mapper to use Lift... use

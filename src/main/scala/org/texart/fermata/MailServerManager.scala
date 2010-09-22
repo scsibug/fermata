@@ -15,6 +15,7 @@ import net.liftweb.common.Logger
 import net.liftweb.actor._
 import code.comet.{MostRecentMail, NewMessage}
 
+import com.google.inject._
 
 import code.model.Message
 import code.model.Recipient
@@ -25,11 +26,13 @@ import java.util.Date
 
 import org.apache.commons.io.IOUtils
 
-object MailServerManager {
-  var serverMap = new HashMap[String, SMTPServer]
- 
+@Singleton
+class MailServerManager extends MailServerManagerService{
+  val serverMap = new HashMap[String, SMTPServer]
+  @Inject var msgIdx: MessageIndexService = _
+
   def startServer(name: String, port: Int) {
-    var server = new SMTPServer(new LoggingMessageHandlerFactory())
+    var server = new SMTPServer(new LoggingMessageHandlerFactory(msgIdx))
     server.setPort(port)
     serverMap += name -> server
     server.start()
@@ -44,11 +47,11 @@ object MailServerManager {
     serverMap.values.map{i => i.getPort}
 }
 
-class LoggingMessageHandlerFactory extends MessageHandlerFactory {
-  def create(ctx:MessageContext) = new Handler(ctx)
+class LoggingMessageHandlerFactory(msgIdx: MessageIndexService) extends MessageHandlerFactory {
+  def create(ctx:MessageContext) = new Handler(ctx,msgIdx)
 }
 
-class Handler(ctx: MessageContext) extends MessageHandler with Logger {
+class Handler(ctx: MessageContext, msgIdx: MessageIndexService) extends MessageHandler with Logger {
   var from = ""
   var recipients = List[String]()
   var msg : SMTPMessage = _
@@ -83,7 +86,7 @@ class Handler(ctx: MessageContext) extends MessageHandler with Logger {
     var recipient_entities = recipients.map({x:String => Recipient.recipientFindOrNew(x)})
     recipient_entities.map({x:Recipient => x save; MessageRecipient.join(x,msg_entity)})
     //MostRecentMail ! NewMessage(msg_entity)
-    MessageIndex ! NewMessage(msg_entity)
+    msgIdx ! NewMessage(msg_entity)
   }
 
   def getText(p:Part):Option[String] = {

@@ -4,6 +4,7 @@ class FermataProject(info: ProjectInfo) extends DefaultWebProject(info) {
   val liftVersion = "2.1-SNAPSHOT"
   val scalaToolsSnapshots = "Scala-Tools Maven2 Snapshots Repository" at "http://scala-tools.org/repo-snapshots/"
   val mavenLocal = "Local Maven Repository" at "file://"+Path.userHome+"/.m2/repository"
+  val guiceRepo = "Google Code Guice Repository" at "http://guice-maven.googlecode.com/svn/trunk"
 
   override def libraryDependencies = Set(
     "net.liftweb" %% "lift-webkit" % liftVersion % "compile->default",
@@ -16,6 +17,8 @@ class FermataProject(info: ProjectInfo) extends DefaultWebProject(info) {
     "org.subethamail" % "subethasmtp" % "3.1.4",
     "commons-io" % "commons-io" % "1.4",
     "org.apache.lucene" % "lucene-core" % "3.0.2",
-    "org.apache.lucene" % "lucene-snowball" % "3.0.2"
+    "org.apache.lucene" % "lucene-snowball" % "3.0.2",
+    "com.google.code.guice" % "guice" % "2.0.1",
+    "aopalliance" % "aopalliance" % "1.0" // needed for guice
   ) ++ super.libraryDependencies
 }

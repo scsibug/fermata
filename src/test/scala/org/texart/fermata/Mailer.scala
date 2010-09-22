@@ -22,7 +22,6 @@ class Mailer (port: Int) {
     msg.setRecipients(Message.RecipientType.TO, rcpts)
     msg.setSubject(subject)
     msg.setContent(body, "text/plain")
-    print(".")
     Transport.send(msg)
   }
 }

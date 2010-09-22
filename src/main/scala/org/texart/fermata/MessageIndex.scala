@@ -11,18 +11,15 @@ import net.liftweb.common.Logger
 import code.comet.{NewMessage}
 import code.model.Message
 import java.io.File
+import com.google.inject._
 
-class MessageIndex extends LiftActor with Logger {
+@Singleton
+class MessageIndex extends MessageIndexService with Logger {
   var analyzer = new SnowballAnalyzer(LUCENE_30, "English")
 
   var indexw : IndexWriter = {
     val dir = new RAMDirectory()
     new IndexWriter(dir, analyzer, IndexWriter.MaxFieldLength.UNLIMITED)
-  }
-
-  override def messageHandler : PartialFunction[Any, Unit] = {
-    case NewMessage(msg: Message) => indexMessage(msg)
-    case DoIndex => reply(this.doIndex())
   }
 
   def search(querystr: String, max: Int) : List[Message] = {
@@ -44,6 +41,7 @@ class MessageIndex extends LiftActor with Logger {
   }
 
   def indexMessage(msg: Message) = {
+    info("Indexing new message")
     indexMessageQuickly(msg)
     indexw commit
   }
@@ -68,8 +66,6 @@ class MessageIndex extends LiftActor with Logger {
   def indexedMailCount : Int = indexw.numDocs
 
 }
-
-case class DoIndex()
 
 object MessageIndex extends MessageIndex {
   //ensure that an index is built (asynchronously)
