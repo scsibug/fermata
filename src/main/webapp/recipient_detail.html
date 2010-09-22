@@ -1,11 +1,27 @@
 <lift:surround with="default" at="content">
   <h2>Messages to <lift:Recipients.address /></h2>
-  <p>
-    <lift:Recipients.listMessages>
-      <ul>
-        <recipient:messages />
-      </ul>
-    </lift:Recipients.listMessages>
-  </p>
+
+<table>
+  <tr>
+    <th>Sender</th>
+    <th>Subject</th>
+    <th>Date</th>
+  </tr>
+  <lift:messageRecipients.all>
+    <tr>    
+      <td><a:sender /></td>
+      <td><a:linkedsubject /></td>
+      <td><a:date /></td>
+    </tr>
+  </lift:messageRecipients.all>
+</table>
+
+  <div>
+    <lift:messageRecipients.paginate>
+      <p><nav:records/></p>
+      <nav:first /> | <nav:prev/> | <nav:next/> | <nav:last />
+    </lift:messageRecipients.paginate>
+  </div>
+
 </lift:surround>
 

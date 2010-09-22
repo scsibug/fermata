@@ -14,33 +14,45 @@ import code.model.Message
 import Helpers._
 import S.?
 
-class Recipients extends DispatchSnippet {
+class MessageRecipients extends DispatchSnippet {
 
   override def dispatch = {
-    case "listMessages" =>  listMessages _
-    case "address" => address _
-
     case "all" => all _
     case "top" => top _
     case "paginate" => paginator.paginate _
   }
 
-  val paginator = new SortedMapperPaginatorSnippet(Recipient,Recipient.id, "ID" -> Recipient.id){
+  val paginator = new SortedMapperPaginatorSnippet(MessageRecipient,MessageRecipient.id, "ID" -> MessageRecipient.id){
     override def itemsPerPage = 20
     _sort = (0,false)
+    val rcptid = S.param("rcptId") getOrElse {"0"}
+    constantParams = List(By(MessageRecipient.recipient,rcptid.toLong))
     override def prevXml: NodeSeq = Text(?("Prev"))
     override def nextXml: NodeSeq = Text(?("Next"))
     override def firstXml: NodeSeq = Text(?("First"))
     override def lastXml: NodeSeq = Text(?("Last"))
   }
 
-  protected def many(recipients: List[Recipient], xhtml: NodeSeq): NodeSeq = 
-    recipients.flatMap(a => single(a,xhtml))
+  protected def many(mrs: List[MessageRecipient], xhtml: NodeSeq): NodeSeq = {
+    val msgs = mrs.map(_.message.obj.open_!)
+    //val msgs = MessageRecipient.findAll(By(MessageRecipient.message, this.id)).map(_.recipient.obj.open_!)
+    msgs.flatMap(a => single(a,xhtml))
+  }
 
-  protected def single(r: Recipient, xhtml: NodeSeq): NodeSeq =
+  // Same as Messages.single
+  protected def single(msg: Message, xhtml: NodeSeq): NodeSeq =
     bind("a", xhtml,
-         "linkedaddress" -> <a href={"/recipient/" + r.primaryKeyField}>{r.addressIndex}</a>
-       )
+      "sender" -> msg.sender,
+      "subject" -> msg.subject,
+      "date" -> msg.sentDate,
+      "linkedsubject" -%> <a href={"/msg/"+msg.primaryKeyField}>{msg.subject}</a>
+    )
+  
+//  protected def single(r: Message, xhtml: NodeSeq): NodeSeq =
+//    val msgs = MessageRecipient.findAll(By(MessageRecipient.message, this.id)).map(_.recipient.obj.open_!)
+//    bind("a", xhtml,
+//         "message" -> <a href={"/msg/" + r.message.get.id}>{r.message.get.subject}</a>
+//       )
     
   // Display all entries the paginator returns
   def all(xhtml: NodeSeq): NodeSeq = many(paginator.page,xhtml)
@@ -53,7 +65,7 @@ class Recipients extends DispatchSnippet {
   // Show most recent, no pagination offsets
   def top(xhtml: NodeSeq) = {
     val count = S.attr("count", _.toInt) openOr 20
-    many(Recipient.findAll(MaxRows(count), OrderBy(Recipient.id, Descending)),xhtml)
+    many(MessageRecipient.findAll(MaxRows(count), OrderBy(MessageRecipient.id, Descending)),xhtml)
   }
 
 
