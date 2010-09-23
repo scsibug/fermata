@@ -13,7 +13,7 @@ import mapper._
 import code.model._
 import code.api._
 
-import org.texart.fermata.{MessageIndex,MailServerManager}
+import code.lib.{MessageIndex,MailServerManager}
 
 /**
  * A class that's instantiated early and run.  It allows the application

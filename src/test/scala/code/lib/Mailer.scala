@@ -1,4 +1,4 @@
-package org.texart.fermata
+package code.lib
 
 import com.sun.mail.smtp.SMTPMessage
 import javax.mail._
