@@ -95,5 +95,5 @@ object MessageIndexSpecs extends Specification{
       new_count must be equalTo(orig_count + 1)
     }
 
-  }	
+  }
 }

@@ -11,6 +11,7 @@ import Loc._
 import mapper._
 
 import code.model._
+import code.api._
 
 import org.texart.fermata.{MessageIndex,MailServerManager}
 
@@ -45,6 +46,8 @@ class Boot {
 
     // where to search snippet
     LiftRules.addToPackages("code")
+
+    LiftRules.dispatch.prepend(RestAPI.dispatch)
 
     // Rewrites for messages
     LiftRules.statelessRewrite.append {

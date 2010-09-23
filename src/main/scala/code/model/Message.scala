@@ -6,8 +6,9 @@ import _root_.net.liftweb.common._
 import _root_.scala.xml.{NodeSeq, Text}
 import org.apache.lucene.document.{Document,Field}
 import com.sun.mail.smtp.SMTPMessage
-
+import java.text.{SimpleDateFormat}
 import java.io.{IOException, InputStream, ByteArrayInputStream}
+import java.util.{Date}
 
 
 class Message extends LongKeyedMapper[Message] with IdPK {
@@ -63,6 +64,22 @@ class Message extends LongKeyedMapper[Message] with IdPK {
     doc
   }
 
+
+  def atomDateFormatter(d: Date) = {
+    val formatter = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'")
+    formatter.format(d)
+  }
+
+
+  def toAtomEntry = {
+    <entry>
+	<title>{subject.is}</title>
+	<id>tag:{messageId.is}</id>
+	<updated>{atomDateFormatter(sentDate.is)}</updated>
+        <content>{textContent}</content>
+    </entry>
+  }
+
   def allFieldsToText(): String = {
     
     val all = new StringBuffer()
@@ -86,6 +103,17 @@ object Message extends Message with LongKeyedMetaMapper[Message] {
   // A workaround is to drop the existing index, and run:
   // create index messages on messages(id desc);
 
+  def toAtomFeed(msgs: List[Message]) = {
+    val entries = msgs.map(_.toAtomEntry)
+<feed xmlns="http://www.w3.org/2005/Atom">
+  <author><name>Fermata</name></author>
+  <id>tag:fermata-recent-messages</id>
+  <title>Fermata Recently Received Messages</title>
+    <updated>{atomDateFormatter(msgs.head.sentDate.is)}</updated>
+  {entries}
+</feed>
+}
+
   def getMessageById(id : Long) : Box[Message] = {
     val msg : List[Message] = Message.findAll(By(Message.primaryKeyField, id))
     val msgbox = msg match {
@@ -95,8 +123,12 @@ object Message extends Message with LongKeyedMetaMapper[Message] {
     msgbox
   }
 
+  def getLatestMessages(count: Int) : List[Message] = {
+    Message.findAll(OrderBy(Message.primaryKeyField, Descending), MaxRows(count))
+  }
+
   def getLatestMessage() : Box[Message] = {
-    val msg : List[Message] = Message.findAll(OrderBy(Message.primaryKeyField, Descending), MaxRows(1))
+    val msg = getLatestMessages(1)
     val msgbox = msg match {
       case Nil => Empty
       case m :: _ => Full(m)
