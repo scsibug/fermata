@@ -1,4 +1,4 @@
-package org.texart.fermata
+package code.lib
 
 import scala.collection.mutable.HashMap
 

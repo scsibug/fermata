@@ -7,7 +7,6 @@ import _root_.net.liftweb.common._
 import net.liftweb.http.{S,DispatchSnippet,SHtml,RequestVar}
 import code.lib._
 import code.model.Message
-import org.texart.fermata.MessageIndex
 import Helpers._
 
 class Search extends DispatchSnippet {

@@ -1,4 +1,4 @@
-package org.texart.fermata
+package code.lib
 
 import net.liftweb.mapper.{Schemifier}
 import net.liftweb.util.{Log}
