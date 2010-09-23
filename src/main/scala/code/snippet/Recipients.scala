@@ -56,21 +56,6 @@ class Recipients extends DispatchSnippet {
     many(Recipient.findAll(MaxRows(count), OrderBy(Recipient.id, Descending)),xhtml)
   }
 
-
-
-
-
-
-
-//  def list(xhtml: NodeSeq) = {
-//    val count = S.attr("count", _.toInt) openOr 20
-//    bind("recipients", xhtml,
-//         "latest" -> Recipient.findAll(MaxRows(count)).flatMap(
-//           r => <li><a href={"/recipient/" + r.primaryKeyField}>{r.addressIndex}</a></li>
-//         )
-//    )
-//  }
-
   def listMessages(xhtml: NodeSeq) = {
     val rcptid = S.param("rcptId") getOrElse {"0"}
     val messages : List[Message] = Message.getMessagesByRecipient(rcptid.toLong)
