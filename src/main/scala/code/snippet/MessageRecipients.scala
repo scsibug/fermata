@@ -20,6 +20,7 @@ class MessageRecipients extends DispatchSnippet {
     case "all" => all _
     case "top" => top _
     case "paginate" => paginator.paginate _
+    case "recipientFeedUrl" => recipientFeedUrl _
   }
 
   val paginator = new SortedMapperPaginatorSnippet(MessageRecipient,MessageRecipient.id, "ID" -> MessageRecipient.id){
@@ -80,4 +81,11 @@ class MessageRecipients extends DispatchSnippet {
       case _ => Nil
     }
   }
+
+  def recipientFeedUrl(xhtml: NodeSeq) = {
+    val rcptid = S.param("rcptId") getOrElse {"0"}
+    val feedUrl = "/api/recipient/"+rcptid.toLong+"/atom"
+    <a class="feed" href={feedUrl}><img src="/images/feed-icon-28x28.png" /></a>
+  }
+
 }
