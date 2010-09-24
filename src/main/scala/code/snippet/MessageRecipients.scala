@@ -35,7 +35,6 @@ class MessageRecipients extends DispatchSnippet {
 
   protected def many(mrs: List[MessageRecipient], xhtml: NodeSeq): NodeSeq = {
     val msgs = mrs.map(_.message.obj.open_!)
-    //val msgs = MessageRecipient.findAll(By(MessageRecipient.message, this.id)).map(_.recipient.obj.open_!)
     msgs.flatMap(a => single(a,xhtml))
   }
 
@@ -47,12 +46,6 @@ class MessageRecipients extends DispatchSnippet {
       "date" -> msg.sentDate,
       "linkedsubject" -%> <a href={"/msg/"+msg.primaryKeyField}>{msg.subject}</a>
     )
-  
-//  protected def single(r: Message, xhtml: NodeSeq): NodeSeq =
-//    val msgs = MessageRecipient.findAll(By(MessageRecipient.message, this.id)).map(_.recipient.obj.open_!)
-//    bind("a", xhtml,
-//         "message" -> <a href={"/msg/" + r.message.get.id}>{r.message.get.subject}</a>
-//       )
     
   // Display all entries the paginator returns
   def all(xhtml: NodeSeq): NodeSeq = many(paginator.page,xhtml)
@@ -67,21 +60,6 @@ class MessageRecipients extends DispatchSnippet {
     val count = S.attr("count", _.toInt) openOr 20
     many(MessageRecipient.findAll(MaxRows(count), OrderBy(MessageRecipient.id, Descending)),xhtml)
   }
-
-
-
-
-
-
-
-//  def list(xhtml: NodeSeq) = {
-//    val count = S.attr("count", _.toInt) openOr 20
-//    bind("recipients", xhtml,
-//         "latest" -> Recipient.findAll(MaxRows(count)).flatMap(
-//           r => <li><a href={"/recipient/" + r.primaryKeyField}>{r.addressIndex}</a></li>
-//         )
-//    )
-//  }
 
   def listMessages(xhtml: NodeSeq) = {
     val rcptid = S.param("rcptId") getOrElse {"0"}
