@@ -127,14 +127,7 @@ object Message extends Message with LongKeyedMetaMapper[Message] {
     Message.findAll(OrderBy(Message.primaryKeyField, Descending), MaxRows(count))
   }
 
-  def getLatestMessage() : Box[Message] = {
-    val msg = getLatestMessages(1)
-    val msgbox = msg match {
-      case Nil => Empty
-      case m :: _ => Full(m)
-    }
-    msgbox
-  }
+  def getLatestMessage() : Box[Message] = getLatestMessages(1) headOption
 
   def getMessagesByRecipient(id : Long) : List[Message] = {
     MessageRecipient.findAll(By(MessageRecipient.recipient, id)).map(_.message.obj.open_!)
