@@ -32,7 +32,6 @@ object RestAPI extends XMLApiHelper {
 
   def showRecentMessagesForRecipientAtom(rcpt: String): AtomResponse = {
     AtomResponse(Message.toAtomFeed(MessageRecipient.recentMessagesForRecipient(rcpt.toLong, 20)))
-//      MessageRecipient.findAll(By(MessageRecipient.id,rcpt.toLong),MaxRows(20), OrderBy(MessageRecipient.id, Descending)).map(_.message.obj.open_!)))
   }
 
 }

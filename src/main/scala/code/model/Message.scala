@@ -24,11 +24,11 @@ class Message extends LongKeyedMapper[Message] with IdPK {
 
   def recipients = MessageRecipient.findAll(By(MessageRecipient.message, this.id)).map(_.recipient.obj.open_!)
 
-  def recipientsPrintable() = {
+  def recipientsPrintable = {
     val rlinks = recipients.map({x => val el = <a href={"/recipient/" + x.primaryKeyField}>{x.addressIndex}</a>
-                                      el.asInstanceOf[NodeSeq]
-                                })
-    rlinks.reduceLeft((x,y) => x ++ Text(", ") ++ y)
+                                 el.asInstanceOf[NodeSeq]})
+    if (rlinks isEmpty) Text("") else
+      rlinks.reduceLeft((x,y) => x ++ Text(", ") ++ y)
   }
 
   def getHeaders() : String = {
@@ -64,12 +64,10 @@ class Message extends LongKeyedMapper[Message] with IdPK {
     doc
   }
 
-
   def atomDateFormatter(d: Date) = {
     val formatter = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'")
     formatter.format(d)
   }
-
 
   def toAtomEntry = {
     <entry>
@@ -81,7 +79,6 @@ class Message extends LongKeyedMapper[Message] with IdPK {
   }
 
   def allFieldsToText(): String = {
-    
     val all = new StringBuffer()
     all.append(textContent).append("\n")
     all.append(subject).append("\n")
@@ -105,11 +102,12 @@ object Message extends Message with LongKeyedMetaMapper[Message] {
 
   def toAtomFeed(msgs: List[Message]) = {
     val entries = msgs.map(_.toAtomEntry)
+    val updatedDate = if (msgs isEmpty) new Date() else msgs.head.sentDate.is
 <feed xmlns="http://www.w3.org/2005/Atom">
   <author><name>Fermata</name></author>
   <id>tag:fermata-recent-messages</id>
   <title>Fermata Recently Received Messages</title>
-    <updated>{atomDateFormatter(msgs.head.sentDate.is)}</updated>
+    <updated>{atomDateFormatter(updatedDate)}</updated>
   {entries}
 </feed>
 }
