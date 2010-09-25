@@ -4,6 +4,7 @@ import _root_.net.liftweb.mapper._
 import _root_.net.liftweb.util._
 import _root_.net.liftweb.common._
 import _root_.scala.xml.{NodeSeq, Text}
+import _root_.net.liftweb.http.S
 import org.apache.lucene.document.{Document,Field}
 import com.sun.mail.smtp.SMTPMessage
 import java.text.{SimpleDateFormat}
@@ -70,9 +71,12 @@ class Message extends LongKeyedMapper[Message] with IdPK {
   }
 
   def toAtomEntry = {
+    val uri = S.request.map(_.uri) openOr ("")
+    val atomUrl = S.hostAndPath+"/msg/"+id
     <entry>
 	<title>{subject.is}</title>
-	<id>tag:{messageId.is}</id>
+	<link href={atomUrl} />
+	<id>{atomUrl}</id>
 	<updated>{atomDateFormatter(sentDate.is)}</updated>
         <content>{textContent}</content>
     </entry>
@@ -100,13 +104,14 @@ object Message extends Message with LongKeyedMetaMapper[Message] {
   // A workaround is to drop the existing index, and run:
   // create index messages on messages(id desc);
 
-  def toAtomFeed(msgs: List[Message]) = {
+  def toAtomFeed(title: String, feedUri: String, msgs: List[Message]) = {
     val entries = msgs.map(_.toAtomEntry)
     val updatedDate = if (msgs isEmpty) new Date() else msgs.head.sentDate.is
 <feed xmlns="http://www.w3.org/2005/Atom">
   <author><name>Fermata</name></author>
-  <id>tag:fermata-recent-messages</id>
-  <title>Fermata Recently Received Messages</title>
+  <id>{feedUri}</id>
+  <link href={feedUri} />
+  <title>{title}</title>
     <updated>{atomDateFormatter(updatedDate)}</updated>
   {entries}
 </feed>

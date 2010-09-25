@@ -1,7 +1,7 @@
 package code.api
 
 import scala.xml.{Node, NodeSeq}
-
+import _root_.net.liftweb.http.S
 import net.liftweb.common.{Box,Full,Logger}
 import net.liftweb.http.{AtomResponse,BadResponse,CreatedResponse,GetRequest,LiftResponse,LiftRules,NotFoundResponse,ParsePath,PutRequest,Req,RewriteRequest}
 import net.liftweb.http.rest.XMLApiHelper
@@ -27,11 +27,23 @@ object RestAPI extends XMLApiHelper {
   }
 
   def showRecentMessagesAtom(): AtomResponse = {
-    AtomResponse(Message.toAtomFeed(Message.getLatestMessages(20)))
+    AtomResponse(Message.toAtomFeed(
+      "Fermata Recently Received Messages",
+      currentUri,
+      Message.getLatestMessages(20)))
   }
 
   def showRecentMessagesForRecipientAtom(rcpt: String): AtomResponse = {
-    AtomResponse(Message.toAtomFeed(MessageRecipient.recentMessagesForRecipient(rcpt.toLong, 20)))
+    AtomResponse(Message.toAtomFeed(
+      "Recent Messages for "+rcpt,
+      currentUri,
+      MessageRecipient.recentMessagesForRecipient(rcpt.toLong, 20)))
+  }
+
+  // The URI for the current request.
+  def currentUri = {
+    val uri = S.request.map(_.uri) openOr ("")
+    S.hostAndPath+uri
   }
 
 }
