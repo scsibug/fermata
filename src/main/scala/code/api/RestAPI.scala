@@ -2,7 +2,7 @@ package code.api
 
 import scala.xml.{Node, NodeSeq}
 import _root_.net.liftweb.http.S
-import net.liftweb.common.{Box,Full,Logger}
+import net.liftweb.common.{Box,Full,Empty,Logger}
 import net.liftweb.http.{AtomResponse,BadResponse,CreatedResponse,GetRequest,LiftResponse,LiftRules,NotFoundResponse,ParsePath,PutRequest,Req,RewriteRequest}
 import net.liftweb.http.rest.XMLApiHelper
 import net.liftweb.mapper.By
@@ -34,12 +34,20 @@ object RestAPI extends XMLApiHelper {
   }
 
   def showRecentMessagesForRecipientAtom(rcpt: String): AtomResponse = {
-    val recipientB = Recipient.find(By(Recipient.id,rcpt.toLong))
-    val recipientAddr = (recipientB.map(_.addressIndex)) openOr rcpt
+    // If rcpt is a number, lookup by recipient ID.  Otherwise, lookup
+    // based on recipient address.
+    var recipientB: Box[Recipient] = Empty
+    try {
+      recipientB = Recipient.find(By(Recipient.id,rcpt.toLong))
+    } catch {
+      case e:NumberFormatException =>
+        recipientB =  Recipient.find(By(Recipient.addressIndex,rcpt))
+    }
+    val recipientId: Long = recipientB.map(_.id.get) openOr 0
     AtomResponse(Message.toAtomFeed(
-      "Recent Messages for "+recipientAddr,
+      "Recent Messages for "+(recipientB.map(_.addressIndex) openOr rcpt),
       currentUri,
-      MessageRecipient.recentMessagesForRecipient(rcpt.toLong, 20)))
+      MessageRecipient.recentMessagesForRecipient(recipientId, 20)))
   }
 
   // The URI for the current request.
