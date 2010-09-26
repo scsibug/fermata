@@ -7,7 +7,7 @@ import net.liftweb.http.{AtomResponse,BadResponse,CreatedResponse,GetRequest,Lif
 import net.liftweb.http.rest.XMLApiHelper
 import net.liftweb.mapper.By
 
-import code.model.{Message,MessageRecipient}
+import code.model.{Message,MessageRecipient,Recipient}
 
 object RestAPI extends XMLApiHelper {
 
@@ -34,8 +34,10 @@ object RestAPI extends XMLApiHelper {
   }
 
   def showRecentMessagesForRecipientAtom(rcpt: String): AtomResponse = {
+    val recipientB = Recipient.find(By(Recipient.id,rcpt.toLong))
+    val recipientAddr = (recipientB.map(_.addressIndex)) openOr rcpt
     AtomResponse(Message.toAtomFeed(
-      "Recent Messages for "+rcpt,
+      "Recent Messages for "+recipientAddr,
       currentUri,
       MessageRecipient.recentMessagesForRecipient(rcpt.toLong, 20)))
   }

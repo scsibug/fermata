@@ -112,7 +112,7 @@ object Message extends Message with LongKeyedMetaMapper[Message] {
   <id>{feedUri}</id>
   <link href={feedUri} />
   <title>{title}</title>
-    <updated>{atomDateFormatter(updatedDate)}</updated>
+  <updated>{atomDateFormatter(updatedDate)}</updated>
   {entries}
 </feed>
 }
