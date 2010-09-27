@@ -37,7 +37,12 @@ class Boot {
     MailServerManager.startServer("default",2500)
     // Ping the indexer, so that it starts up immediately
     MessageIndex ! None
-
+    // Shutdown mail server at Lift unload
+    def mailShutdown = {
+      MailServerManager.stopServer("default")
+      ()
+    }
+    LiftRules.unloadHooks.append(mailShutdown _)
     // Use Lift's Mapper ORM to populate the database
     // you don't need to use Mapper to use Lift... use
     // any ORM you want
