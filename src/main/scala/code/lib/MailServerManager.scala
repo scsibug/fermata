@@ -25,20 +25,24 @@ import java.util.Date
 
 import org.apache.commons.io.IOUtils
 
-object MailServerManager {
+object MailServerManager extends Logger{
   var serverMap = new HashMap[String, SMTPServer]
  
   def startServer(name: String, port: Int) {
+    info("Starting mail server "+name+" on port "+port.toString)
     var server = new SMTPServer(new LoggingMessageHandlerFactory())
     server.setPort(port)
     serverMap += name -> server
     server.start()
   }
 
-  def stopServer(name: String) = serverMap.remove(name) match {
+  def stopServer(name: String) = {
+    info("Shutting down mailserver "+name)
+    serverMap.remove(name) match {
       case None => false
       case Some(x) => {x.stop() ; true}
     }
+  }
 
   def portsInUse():Iterable[Int] = 
     serverMap.values.map{i => i.getPort}
