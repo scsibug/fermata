@@ -11,11 +11,12 @@ import Loc._
 import mapper._
 
 import code.model._
+import code.api._
 
 import com.google.inject._
 import com.google._
 
-import org.texart.fermata.{MessageModule,MessageIndex,MailServerManagerService}
+import code.lib.{MessageModule,MessageIndex,MailServerManagerService}
 
 /**
  * A class that's instantiated early and run.  It allows the application
@@ -44,6 +45,13 @@ class Boot {
     val msgIdx = inj.getInstance(classOf[MessageIndexService])
     msgIdx ! None
 
+    // Shutdown mail server at Lift unload
+    def mailShutdown = {
+      MailServerManager.stopServer("default")
+      ()
+    }
+    LiftRules.unloadHooks.append(mailShutdown _)
+
     // Use Lift's Mapper ORM to populate the database
     // you don't need to use Mapper to use Lift... use
     // any ORM you want
@@ -52,6 +60,8 @@ class Boot {
 
     // where to search snippet
     LiftRules.addToPackages("code")
+
+    LiftRules.dispatch.prepend(RestAPI.dispatch)
 
     // Rewrites for messages
     LiftRules.statelessRewrite.append {

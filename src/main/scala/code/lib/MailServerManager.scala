@@ -1,4 +1,4 @@
-package org.texart.fermata
+package code.lib
 
 import scala.collection.mutable.HashMap
 
@@ -26,22 +26,27 @@ import java.util.Date
 
 import org.apache.commons.io.IOUtils
 
+<<<<<<< HEAD:src/main/scala/org/texart/fermata/MailServerManager.scala
 @Singleton
-class MailServerManager extends MailServerManagerService{
+class MailServerManager extends MailServerManagerService with Logger {
   val serverMap = new HashMap[String, SMTPServer]
   @Inject var msgIdx: MessageIndexService = _
 
   def startServer(name: String, port: Int) {
+    info("Starting mail server "+name+" on port "+port.toString)
     var server = new SMTPServer(new LoggingMessageHandlerFactory(msgIdx))
     server.setPort(port)
     serverMap += name -> server
     server.start()
   }
 
-  def stopServer(name: String) = serverMap.remove(name) match {
+  def stopServer(name: String) = {
+    info("Shutting down mailserver "+name)
+    serverMap.remove(name) match {
       case None => false
       case Some(x) => {x.stop() ; true}
     }
+  }
 
   def portsInUse():Iterable[Int] = 
     serverMap.values.map{i => i.getPort}

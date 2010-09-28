@@ -1,4 +1,5 @@
-package org.texart.fermata
+package code.lib
+
 import org.apache.lucene.index.{IndexWriter}
 import org.apache.lucene.store.{SimpleFSDirectory,RAMDirectory}
 import org.apache.lucene.analysis.snowball.{SnowballAnalyzer}

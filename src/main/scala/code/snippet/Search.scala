@@ -7,7 +7,6 @@ import _root_.net.liftweb.common._
 import net.liftweb.http.{S,DispatchSnippet,SHtml,RequestVar}
 import code.lib._
 import code.model.Message
-import org.texart.fermata.MessageIndex
 import Helpers._
 
 class Search extends DispatchSnippet {
@@ -23,7 +22,6 @@ class Search extends DispatchSnippet {
 
     def doSearch () = {
       println("query is " + query)
-      //val msgs = MessageIndex.search(query,10)
     }
 
     bind("search", xhtml,
@@ -33,11 +31,8 @@ class Search extends DispatchSnippet {
   }
 
   def results(xhtml: NodeSeq): NodeSeq = {
-      if (query.is=="") {
-        return Text("")
-      }
-      val msgs = MessageIndex.search(query,10)
-      many(msgs,xhtml)
+    if (query.is=="") Text("")
+      else many(MessageIndex.search(query,10),xhtml)
   }
 
   def many(messages: List[Message], xhtml: NodeSeq): NodeSeq = 

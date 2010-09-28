@@ -12,6 +12,16 @@ class MessageRecipient extends LongKeyedMapper[MessageRecipient] with IdPK {
 
 object MessageRecipient extends MessageRecipient with LongKeyedMetaMapper[MessageRecipient] {
   override def dbTableName = "messagerecipients"
+
   def join (rpt : Recipient, msg : Message) =
     this.create.recipient(rpt).message(msg).save
+
+  def recentMessagesForRecipient(rcpt: Long, count: Int): List[Message] = {
+    val msgrcpts = MessageRecipient.findAll(
+      By(MessageRecipient.recipient,rcpt),
+      MaxRows(count),
+      OrderBy(MessageRecipient.id,Descending))
+    msgrcpts.map(_.message.obj.open_!)
+  }
+
 }
