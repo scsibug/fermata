@@ -3,7 +3,7 @@ Releasing new versions
 
  * Remove "SNAPSHOT" from project/build.properties
  * git commit -am 'Bumped version number.'
- * git tag v.0.X -s -m 'Version 0.X'
+ * git tag v0.X -s -m 'Version 0.X'
  * git push --tags
  * Increment project/build.properties version, suffix with "-SNAPSHOT"
  * git commit -am 'Bumped version number.'
