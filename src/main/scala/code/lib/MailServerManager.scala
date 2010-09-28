@@ -26,7 +26,6 @@ import java.util.Date
 
 import org.apache.commons.io.IOUtils
 
-<<<<<<< HEAD:src/main/scala/org/texart/fermata/MailServerManager.scala
 @Singleton
 class MailServerManager extends MailServerManagerService with Logger {
   val serverMap = new HashMap[String, SMTPServer]

@@ -1,4 +1,4 @@
-package org.texart.fermata
+package code.lib
 
 abstract class MailServerManagerService {
   def startServer(name: String, port: Int)

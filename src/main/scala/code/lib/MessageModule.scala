@@ -1,4 +1,4 @@
-package org.texart.fermata
+package code.lib
 
 import com.google.inject._
 import com.google._

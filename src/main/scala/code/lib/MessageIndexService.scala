@@ -1,4 +1,4 @@
-package org.texart.fermata
+package code.lib
 
 import net.liftweb.actor._
 import code.model.Message
