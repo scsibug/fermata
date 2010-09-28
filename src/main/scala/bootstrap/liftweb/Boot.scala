@@ -16,7 +16,7 @@ import code.api._
 import com.google.inject._
 import com.google._
 
-import code.lib.{MessageModule,MessageIndex,MailServerManagerService}
+import code.lib.{MessageModule,MessageIndexService,MessageIndex,MailServerManagerService,MailServerManager}
 
 /**
  * A class that's instantiated early and run.  It allows the application
@@ -47,7 +47,7 @@ class Boot {
 
     // Shutdown mail server at Lift unload
     def mailShutdown = {
-      MailServerManager.stopServer("default")
+      mailServerMgr.stopServer("default")
       ()
     }
     LiftRules.unloadHooks.append(mailShutdown _)
