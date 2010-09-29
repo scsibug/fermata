@@ -6,11 +6,15 @@
         <li>From: <message:sender/></li>
         <li>To: <message:recipients/></li>
         <li>Subject: <message:subject/></li>
-        <li>Date: <message:sentDate/></li>
+        <li>Received: <message:sent/></li>
       </ul>
       <hr />
+      <a href="#" id="msgHeaderDisplayToggleLink"
+         onclick="$('#msgHeaders').toggle()">Show / Hide Message Headers</a>
+      <div id="msgHeaders" style="display:none">
       <pre><message:headers/></pre>
-      <hr />
+      <hr/>
+      </div>
       <pre><message:textContent/></pre>
     </lift:Messages.detail>
   </p>
