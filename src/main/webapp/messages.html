@@ -1,7 +1,22 @@
 <lift:surround with="default" at="content">
   <h2>Messages</h2>
+    <script type="text/javascript"> 
+/* <![CDATA[ */
+    $(document).ready(function() {
 
-<table>
+    $('#linkedrows tr').click(function() {
+        var href = $(this).find("a").attr("href");
+        if(href) {
+            window.location = href;
+        }
+    });
+
+});
+
+  /* ]]> */
+    </script> 
+
+<table id="linkedrows">
   <tr>
     <th>Sender</th>
     <th>Subject</th>
