@@ -65,6 +65,8 @@ class Message extends LongKeyedMapper[Message] with IdPK {
     doc
   }
 
+  def atomSentDate() = atomDateFormatter(this.sentDate.is)
+
   def atomDateFormatter(d: Date) = {
     val formatter = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'")
     formatter.format(d)
