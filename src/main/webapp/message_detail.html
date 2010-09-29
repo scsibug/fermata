@@ -9,8 +9,12 @@
         <li>Date: <message:sentDate/></li>
       </ul>
       <hr />
+      <a href="#" id="msgHeaderDisplayToggleLink"
+         onclick="$('#msgHeaders').toggle()">Show / Hide Message Headers</a>
+      <div id="msgHeaders" style="display:none">
       <pre><message:headers/></pre>
-      <hr />
+      <hr/>
+      </div>
       <pre><message:textContent/></pre>
     </lift:Messages.detail>
   </p>
