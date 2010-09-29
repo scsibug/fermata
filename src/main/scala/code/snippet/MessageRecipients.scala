@@ -40,12 +40,12 @@ class MessageRecipients extends DispatchSnippet {
   }
 
   // Same as Messages.single
-  protected def single(msg: Message, xhtml: NodeSeq): NodeSeq =
+  protected def single(m: Message, xhtml: NodeSeq): NodeSeq =
     bind("a", xhtml,
-      "sender" -> msg.sender,
-      "subject" -> msg.subject,
-      "date" -> msg.sentDate,
-      "linkedsubject" -%> <a href={"/msg/"+msg.primaryKeyField}>{msg.subject}</a>
+      "sender" -> m.sender,
+      "subject" -> m.subject,
+      "sent" -> <abbr class="timeago" title={m.atomSentDate}>{m.sentDate}</abbr>,
+      "linkedsubject" -%> <a href={"/msg/"+m.primaryKeyField}>{m.subject}</a>
     )
     
   // Display all entries the paginator returns
