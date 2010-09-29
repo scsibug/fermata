@@ -41,7 +41,7 @@ class Messages extends DispatchSnippet {
     bind("a", xhtml,
       "sender" -> msg.sender,
       "subject" -> msg.subject,
-      "date" -> msg.sentDate,
+      "date" -> <abbr class="timeago" title={Message.atomDateFormatter(msg.sentDate.is)}>{msg.sentDate}</abbr>,
       "linkedsubject" -%> <a href={"/msg/"+msg.primaryKeyField}>{msg.subject}</a>
     )
     
@@ -68,7 +68,7 @@ class Messages extends DispatchSnippet {
         bind("message", xhtml, 
           "sender" -> m.sender,
           "subject" -> m.subject,
-          "sentDate" -> m.sentDate,
+          "sentDate" -> <abbr class="timeago" title={Message.atomDateFormatter(m.sentDate.is)}>{m.sentDate}</abbr>,
           "textContent" -> m.textContent,
           "recipients" -> m.recipientsPrintable,
           "headers" -> m.getHeaders())
