@@ -9,7 +9,7 @@ import org.apache.lucene.document.{Document,Field}
 import com.sun.mail.smtp.SMTPMessage
 import java.text.{SimpleDateFormat}
 import java.io.{IOException, InputStream, ByteArrayInputStream}
-import java.util.{Date}
+import java.util.{Date,TimeZone}
 
 
 class Message extends LongKeyedMapper[Message] with IdPK {
@@ -65,8 +65,12 @@ class Message extends LongKeyedMapper[Message] with IdPK {
     doc
   }
 
+  def atomSentDate() = atomDateFormatter(this.sentDate.is)
+
   def atomDateFormatter(d: Date) = {
     val formatter = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'")
+    val timeZone = TimeZone.getTimeZone("UTC");
+    formatter.setTimeZone(timeZone);
     formatter.format(d)
   }
 
