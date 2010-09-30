@@ -8,13 +8,23 @@
         <li>Subject: <message:subject/></li>
         <li>Received: <message:sent/></li>
       </ul>
+
       <hr />
       <a href="#" id="msgHeaderDisplayToggleLink"
-         onclick="$('#msgHeaders').toggle()">Show / Hide Message Headers</a>
+         onclick="$('#msgHeaders').toggle()">Show / Hide Headers</a>
       <div id="msgHeaders" style="display:none">
       <pre><message:headers/></pre>
       <hr/>
       </div>
+
+      <hr />
+      <a href="#" id="msgAttachmentsDisplayToggleLink"
+         onclick="$('#msgAttachments').toggle()">Show / Hide Attachments</a>
+      <div id="msgAttachments" style="display:none">
+      <pre><message:attachments/></pre>
+      <hr/>
+      </div>
+
       <pre><message:textContent/></pre>
     </lift:Messages.detail>
   </p>
