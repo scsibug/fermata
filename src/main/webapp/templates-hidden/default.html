@@ -14,17 +14,13 @@
 /* <![CDATA[ */
       jQuery(document).ready(function($) {
         $("abbr.timeago").timeago();
-      });
-      
-    $(document).ready(function() {
         $('#linkedrows tr').click(function() {
             var href = $(this).find("a").attr("href");
             if(href) {
                 window.location = href;
             }
         });
-    });
-
+      });
   /* ]]> */
     </script> 
     <style type="text/css">
