@@ -20,7 +20,13 @@
                 window.location = href;
             }
         });
-      });
+        $('#linkedrows tr:even').addClass("zebra");
+        $('#linkedrows tr').mouseover(function() {
+          $(this).addClass("over");})
+        .mouseout(function() {
+          $(this).removeClass("over");})
+    });
+
   /* ]]> */
     </script> 
     <style type="text/css">
@@ -71,11 +77,14 @@ table#linkedrows {
     border-collapse: collapse;   
 }
 #linkedrows tr {
-    background-color: #eee;
-    border-top: 1px solid #fff;
+    background-color: #fff;
+    border-top: 1px solid #eee;
 }
-#linkedrows tr:hover {
-    background-color: #ccc;
+#linkedrows tr.zebra td {
+    background: #ecf6fc;
+}
+#linkedrows tr.over td, tr:hover td {
+	background: #bcd4ec;
 }
 #linkedrows th, #linkedrows td {
     padding: 3px 11px;
@@ -85,7 +94,6 @@ table#linkedrows {
 #linkedrows td:hover {
     cursor: pointer;
 }
-
 
   /* ]]> */
   </style>
