@@ -106,6 +106,8 @@ class Message extends LongKeyedMapper[Message] with IdPK {
     </entry>
   }
 
+  def url: String = "/msg/" + primaryKeyField
+
   def allFieldsToText(): String = {
     val all = new StringBuffer()
     all.append(textContent).append("\n")

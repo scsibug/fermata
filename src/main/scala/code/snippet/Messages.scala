@@ -42,7 +42,7 @@ class Messages extends DispatchSnippet {
       "sender" -> m.sender,
       "subject" -> m.subject,
       "sent" -> <abbr class="timeago" title={m.atomSentDate}>{m.sentDate}</abbr>,
-      "linkedsubject" -%> <a href={"/msg/"+m.primaryKeyField}>{m.subject}</a>
+      "linkedsubject" -%> <a href={m.url}>{m.subject}</a>
     )
     
   // Display all entries the paginator returns
