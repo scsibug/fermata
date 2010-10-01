@@ -71,7 +71,8 @@ class Messages extends DispatchSnippet {
           "sent" -> <abbr class="timeago" title={m.atomSentDate}>{m.sentDate}</abbr>,
           "textContent" -> m.textContent,
           "recipients" -> m.recipientsPrintable,
-          "headers" -> m.getHeaders())
+          "headers" -> m.getHeaders(),
+          "attachments" -> m.getAttachments().map{x => <li>{x}</li>})
       case _ => <strong>{?("Could not find message")}</strong>
     }
   }

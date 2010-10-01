@@ -14,7 +14,19 @@
 /* <![CDATA[ */
       jQuery(document).ready(function($) {
         $("abbr.timeago").timeago();
-      });
+        $('#linkedrows tr').click(function() {
+            var href = $(this).find("a").attr("href");
+            if(href) {
+                window.location = href;
+            }
+        });
+        $('#linkedrows tr:even').addClass("zebra");
+        $('#linkedrows tr').mouseover(function() {
+          $(this).addClass("over");})
+        .mouseout(function() {
+          $(this).removeClass("over");})
+    });
+
   /* ]]> */
     </script> 
     <style type="text/css">
@@ -61,14 +73,39 @@
 	float: right;
 }
 
+table#linkedrows {
+    border-collapse: collapse;   
+}
+#linkedrows th {
+    border-top: 1px solid #eee;
+    border-bottom: 1px solid #eee;
+}
+#linkedrows tr {
+    background-color: #fff;
+    border-bottom: 1px solid #eee;
+}
+#linkedrows tr.zebra td {
+    background: #ecf6fc;
+}
+#linkedrows tr.over td, tr:hover td {
+	background: #bcd4ec;
+}
+#linkedrows th, #linkedrows td {
+    padding: 3px 11px;
+    border-right: 1px solid #fff;
+    line-height: 1.2;
+}
+#linkedrows td:hover {
+    cursor: pointer;
+}
 
   /* ]]> */
   </style>
   </head>
   <body>
     <div class="container">
-      <div class="column span-12 last" style="text-align: right">
-        <h1 class="alt">𝄐<img alt="" id="ajax-loader" style="display:none; margin-bottom: 0px; margin-left: 5px" src="/images/ajax-loader.gif"/></h1>
+      <div class="column span-12 last" style="text-align: left">
+        <h1 class="alt"><strong>FERMATA</strong><img alt="" id="ajax-loader" style="display:none; margin-bottom: 0px; margin-left: 5px" src="/images/ajax-loader.gif"/></h1>
       </div>
 
       <hr/>

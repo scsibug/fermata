@@ -38,6 +38,13 @@ class Boot {
       DB.defineConnectionManager(DefaultConnectionIdentifier, vendor)
     }
 
+    LiftRules.unloadHooks.append(mailShutdown _)
+    // Use Lift's Mapper ORM to populate the database
+    // you don't need to use Mapper to use Lift... use
+    // any ORM you want
+    Schemifier.schemify(true, Schemifier.infoF _, User, Message, Recipient,
+                        MessageRecipient)
+
     // Start a default mail server
     val mailServerMgr = inj.getInstance(classOf[MailServerManagerService])
     mailServerMgr.startServer("default",2500)
@@ -50,13 +57,6 @@ class Boot {
       mailServerMgr.stopServer("default")
       ()
     }
-    LiftRules.unloadHooks.append(mailShutdown _)
-
-    // Use Lift's Mapper ORM to populate the database
-    // you don't need to use Mapper to use Lift... use
-    // any ORM you want
-    Schemifier.schemify(true, Schemifier.infoF _, User, Message, Recipient,
-                        MessageRecipient)
 
     // where to search snippet
     LiftRules.addToPackages("code")
