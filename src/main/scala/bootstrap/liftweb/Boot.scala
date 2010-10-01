@@ -33,6 +33,13 @@ class Boot {
       DB.defineConnectionManager(DefaultConnectionIdentifier, vendor)
     }
 
+    LiftRules.unloadHooks.append(mailShutdown _)
+    // Use Lift's Mapper ORM to populate the database
+    // you don't need to use Mapper to use Lift... use
+    // any ORM you want
+    Schemifier.schemify(true, Schemifier.infoF _, User, Message, Recipient,
+                        MessageRecipient)
+
     // Start a default mail server
     MailServerManager.startServer("default",2500)
     // Ping the indexer, so that it starts up immediately
@@ -42,12 +49,6 @@ class Boot {
       MailServerManager.stopServer("default")
       ()
     }
-    LiftRules.unloadHooks.append(mailShutdown _)
-    // Use Lift's Mapper ORM to populate the database
-    // you don't need to use Mapper to use Lift... use
-    // any ORM you want
-    Schemifier.schemify(true, Schemifier.infoF _, User, Message, Recipient,
-                        MessageRecipient)
 
     // where to search snippet
     LiftRules.addToPackages("code")
