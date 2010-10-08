@@ -73,6 +73,7 @@ class Handler(ctx: MessageContext) extends MessageHandler with Logger {
   def data(data: InputStream) {
     val base = IOUtils.toByteArray(data)
     msg = new SMTPMessage(null, new ByteArrayInputStream(base))
+    val msgatt = new MimeAttachments(msg)
     info("Message received.")
     debug("All recipients: " ++ (recipients mkString " "))
 
@@ -82,32 +83,12 @@ class Handler(ctx: MessageContext) extends MessageHandler with Logger {
     msg_entity sentDate (new Date())
     msg_entity messageId msg.getMessageID()
     msg_entity msgBody base
-    msg_entity textContent (getText(msg) getOrElse null)
+    msg_entity textContent (msgatt.getText getOrElse null)
     msg_entity save
     var recipient_entities = recipients.map({x:String => Recipient.recipientFindOrNew(x)})
     recipient_entities.map({x:Recipient => x save; MessageRecipient.join(x,msg_entity)})
     //MostRecentMail ! NewMessage(msg_entity)
     MessageIndex ! NewMessage(msg_entity)
-  }
-
-  def getText(p:Part):Option[String] = {
-    var txtbox : Option[String] = None
-    if (p.isMimeType("text/plain")) {
-      val txt = p.getContent().asInstanceOf[String]
-      if (txt != null) txtbox = Some(txt)
-    } else if (p.isMimeType("multipart/*")) {
-      val mp : Multipart = p.getContent().asInstanceOf[Multipart]
-      val range = 0.until(mp.getCount())
-      for (i <- range) {
-        val bp:Part = mp.getBodyPart(i)
-        if (bp.isMimeType("text/plain")) {
-          txtbox = Some(bp.getContent().asInstanceOf[String])
-        } else if (bp.isMimeType("multipart/*")) {
-          txtbox = getText(bp)
-        }
-      }
-    }
-  txtbox
   }
 
   def done {}

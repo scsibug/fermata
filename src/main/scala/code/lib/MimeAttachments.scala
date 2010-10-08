@@ -33,6 +33,19 @@ class MimeAttachments(m: MimeMessage) {
     }
   txtbox
   }
+
+  def allAttachments: Seq[String] = allAttachments(m)
+
+  def allAttachments(p:Part): Seq[String] = {
+    if (p.isMimeType("multipart/*")) {
+      val mp : Multipart = p.getContent().asInstanceOf[Multipart]
+      val range = 0.until(mp.getCount())
+      return range.flatMap{x:Int => allAttachments(mp.getBodyPart(x))}
+    } else {
+      return List(p.getFileName() + ": " +p.getContentType().takeWhile(_!=';'))
+    }
+  }
+
 }
 
 object MimeAttachments {

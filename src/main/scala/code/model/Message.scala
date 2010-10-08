@@ -11,6 +11,7 @@ import java.text.{SimpleDateFormat}
 import java.io.{IOException, InputStream, ByteArrayInputStream}
 import java.util.{Date,TimeZone}
 import javax.mail.{Part, Multipart}
+import code.lib.MimeAttachments
 
 class Message extends LongKeyedMapper[Message] with IdPK {
   def getSingleton = Message
@@ -49,19 +50,10 @@ class Message extends LongKeyedMapper[Message] with IdPK {
     var attachments : Seq[String] = List[String]()
     if (msgBody.get != null) {
       val msg = new SMTPMessage(null, new ByteArrayInputStream(msgBody))
-      attachments = allAttachments(msg)
+      val msgatt = MimeAttachments(msg)
+      attachments = msgatt.allAttachments
     }
     attachments
-  }
-
-  def allAttachments(p:Part): Seq[String] = {
-    if (p.isMimeType("multipart/*")) {
-      val mp : Multipart = p.getContent().asInstanceOf[Multipart]
-      val range = 0.until(mp.getCount())
-      return range.flatMap{x:Int => allAttachments(mp.getBodyPart(x))}
-    } else {
-      return List(p.getFileName() + ": " +p.getContentType().takeWhile(_!=';'))
-    }
   }
 
   // Convert to a Lucene Document for indexing
