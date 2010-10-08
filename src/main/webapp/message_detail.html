@@ -9,21 +9,21 @@
         <li>Received: <message:sent/></li>
       </ul>
 
-      <hr />
       <a href="#" id="msgHeaderDisplayToggleLink"
          onclick="$('#msgHeaders').toggle()">Show / Hide Headers</a>
-      <div id="msgHeaders" style="display:none">
+      <div id="msgHeaders" class="messageExtras">
       <pre><message:headers/></pre>
-      <hr/>
       </div>
 
-      <hr />
+      <br />
+
       <a href="#" id="msgAttachmentsDisplayToggleLink"
          onclick="$('#msgAttachments').toggle()">Show / Hide Attachments</a>
-      <div id="msgAttachments" style="display:none">
+      <div id="msgAttachments" class="messageExtras">
       <pre><message:attachments/></pre>
-      <hr/>
       </div>
+      <br />
+      <hr />
 
       <pre><message:textContent/></pre>
     </lift:Messages.detail>
