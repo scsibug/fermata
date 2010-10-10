@@ -9,17 +9,23 @@
         <li>Received: <message:sent/></li>
       </ul>
 
-      <a href="#" id="msgHeaderDisplayToggleLink"
-         onclick="$('#msgHeaders').toggle()">Show / Hide Headers</a>
+      <div class="grey button" id="msgHeaderDisplayToggleLink"
+         onclick="$('#msgHeaders').toggle();$('#headerIcon').toggleClass('plus');$('#headerIcon').toggleClass('minus')">
+        <span class="plus" id="headerIcon"></span>
+        <strong>Headers</strong>
+      </div>
       <div id="msgHeaders" class="messageExtras">
       <pre><message:headers/></pre>
       </div>
 
       <br />
 
-      <a href="#" id="msgAttachmentsDisplayToggleLink"
-         onclick="$('#msgAttachments').toggle()">Show / Hide Attachments</a>
-      <div id="msgAttachments" class="messageExtras">
+      <div class="grey button" id="msgAttachmentsDisplayToggleLink"
+         onclick="$('#msgAttachments').toggle();$('#attachmentIcon').toggleClass('plus');$('#attachmentIcon').toggleClass('minus')">
+        <span class="plus" id="attachmentIcon"></span>
+        <strong>Attachments</strong>
+      </div>
+       <div id="msgAttachments" class="messageExtras">
       <pre><message:attachments/></pre>
       </div>
       <br />
