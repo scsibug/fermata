@@ -99,6 +99,78 @@ table#linkedrows {
     cursor: pointer;
 }
 
+.messageExtras {
+    display: none;
+    border: 1px solid #ddd;
+    padding: 5px;
+}
+.plus {
+  background-image: url(/images/list-add-16x16.png);
+  display: inline-block;
+  display-repeat: no-repeat;
+  outline: medium none;
+  overflow: hidden;
+  vertical-align: bottom;
+  width: 16px;
+  height: 16px;
+}
+.minus {
+  background-image: url(/images/list-remove-16x16.png);
+  display: inline-block;
+  display-repeat: no-repeat;
+  outline: medium none;
+  overflow: hidden;
+  vertical-align: bottom;
+  width: 16px;
+  height: 16px;
+}
+
+.button {
+  display: inline-block;
+  outline: none;
+  cursor: pointer;
+  text-align: center;
+  text-decoration: none;
+  font: 14px/100% Arial, Helvetica, sans-serif;
+  padding: .5em .5em .55em;
+  text-shadow: 0 1px 1px rgba(0,0,0,.3);
+  -webkit-border-radius: .5em;
+  -moz-border-radius: .5em;
+  border-radius: .5em;
+  -webkit-box-shadow: 0 1px 2px rgba(0,0,0,.2);
+  -moz-box-shadow: 0 1px 2px rgba(0,0,0,.2);
+  box-shadow: 0 1px 2px rgba(0,0,0,.2);
+  margin: 2px;      
+}
+.button:hover {
+  text-decoration: none;
+}
+.button:active {
+  position: relative;
+  top: 1px;
+}
+
+/* grey */
+.grey {
+  color: #222;
+  border: solid 1px #888;
+  background: #fefefe;
+  background: -webkit-gradient(linear, left top, left bottom, from(#fefefe), to(#dddddd));
+  background: -moz-linear-gradient(top,  #fefefe,  #dddddd);
+  filter:  progid:DXImageTransform.Microsoft.gradient(startColorstr='#fefefe', endColorstr='#dddddd');
+}
+.grey:hover {
+  background: #aaa;
+  background: -webkit-gradient(linear, left top, left bottom, from(#dddddd), to(#cccccc));
+  background: -moz-linear-gradient(top,  #dddddd,  #cccccc);
+  filter:  progid:DXImageTransform.Microsoft.gradient(startColorstr='#dddddd', endColorstr='#cccccc');
+}
+.grey:active {
+  color: #111;
+  background: -webkit-gradient(linear, left top, left bottom, from(#cccccc), to(#bbbbbb));
+  background: -moz-linear-gradient(top,  #cccccc,  #bbbbbb);
+  filter:  progid:DXImageTransform.Microsoft.gradient(startColorstr='#cccccc', endColorstr='#bbbbbb');
+}
   /* ]]> */
   </style>
   </head>

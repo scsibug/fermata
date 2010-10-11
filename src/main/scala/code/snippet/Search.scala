@@ -38,11 +38,11 @@ class Search extends DispatchSnippet {
   def many(messages: List[Message], xhtml: NodeSeq): NodeSeq = 
     messages.flatMap(a => single(a,xhtml))
 
-  def single(msg: Message, xhtml: NodeSeq): NodeSeq =
+  def single(m: Message, xhtml: NodeSeq): NodeSeq =
     bind("a", xhtml,
-      "sender" -> msg.sender,
-      "subject" -> msg.subject,
-      "date" -> msg.sentDate,
-      "linkedsubject" -%> <a href={"/msg/"+msg.primaryKeyField}>{msg.subject}</a>
+      "sender" -> m.sender,
+      "subject" -> m.subject,
+      "date" -> m.sentDate,
+      "linkedsubject" -%> <a href={m.url}>{m.subject}</a>
     )
 }

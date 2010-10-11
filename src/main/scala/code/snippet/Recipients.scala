@@ -39,7 +39,7 @@ class Recipients extends DispatchSnippet {
 
   protected def single(r: Recipient, xhtml: NodeSeq): NodeSeq =
     bind("a", xhtml,
-         "linkedaddress" -> <a href={"/recipient/" + r.primaryKeyField}>{r.addressIndex}</a>
+         "linkedaddress" -%> <a href={r.url}>{r.addressIndex}</a>
        )
     
   // Display all entries the paginator returns
