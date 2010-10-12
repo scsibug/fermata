@@ -171,6 +171,22 @@ table#linkedrows {
   background: -moz-linear-gradient(top,  #cccccc,  #bbbbbb);
   filter:  progid:DXImageTransform.Microsoft.gradient(startColorstr='#cccccc', endColorstr='#bbbbbb');
 }
+
+dl {
+  display: block;
+  line-height: 1.6em;
+}
+dt {
+  width: 120px;
+  float: left;
+  color: #444;
+  font-size: 1.2em;
+}
+dd {
+  display: block;
+  font-size: 1.2em;
+}
+
   /* ]]> */
   </style>
   </head>
@@ -184,7 +200,7 @@ table#linkedrows {
 
       <div class="column span-6 colborder sidebar">
         <hr class="space" />
-        <lift:Menu.builder />	
+        <lift:Menu.builder />
         <div>
           <lift:Msgs showAll="true"/>
           <hr class="space" />

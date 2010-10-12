@@ -2,12 +2,12 @@
   <h2>Message Detail</h2>
   <p>
     <lift:Messages.detail>
-      <ul>
-        <li>From: <message:sender/></li>
-        <li>To: <message:recipients/></li>
-        <li>Subject: <message:subject/></li>
-        <li>Received: <message:sent/></li>
-      </ul>
+      <dl>
+        <dt>From</dt> <dd><message:sender/></dd>
+        <dt>To</dt> <dd><message:recipients/></dd>
+        <dt>Subject</dt> <dd><message:subject/></dd>
+        <dt>Received</dt> <dd><message:sent/></dd>
+      </dl>
 
       <div class="grey button" id="msgHeaderDisplayToggleLink"
          onclick="$('#msgHeaders').toggle();$('#headerIcon').toggleClass('plus');$('#headerIcon').toggleClass('minus')">
