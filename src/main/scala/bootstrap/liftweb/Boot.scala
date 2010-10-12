@@ -76,7 +76,7 @@ class Boot {
     // Build TopLevel SiteMap
     val entries = List(
       Menu.i("Home") / "index", // the simple way to declare a menu
-      Menu.i("Messages") / "messages",
+      Menu(Loc("Messages", List("messages"), "Messages")),
       Menu(Loc("Msg", List("message_detail") -> true, "Message Detail", Hidden)),
       Menu.i("Recipients") / "recipients",
       Menu.i("Search") / "search",

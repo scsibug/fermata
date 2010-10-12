@@ -174,7 +174,7 @@ table#linkedrows {
 
 dl {
   display: block;
-  line-height: 1.6em;
+  line-height: 1.8em;
 }
 dt {
   width: 120px;
@@ -185,6 +185,54 @@ dt {
 dd {
   display: block;
   font-size: 1.2em;
+}
+
+.homeIcon {
+  background-image: url(/images/go-home-22x22.png);
+  display: inline-block;
+  display-repeat: no-repeat;
+  outline: medium none;
+  overflow: hidden;
+  vertical-align: bottom;
+  width: 22px;
+  height: 22px;
+  float: left;
+}
+
+.searchIcon {
+  background-image: url(/images/system-search-22x22.png);
+  display: inline-block;
+  display-repeat: no-repeat;
+  outline: medium none;
+  overflow: hidden;
+  vertical-align: bottom;
+  width: 22px;
+  height: 22px;
+  float: left;
+}
+
+.messagesIcon {
+  background-image: url(/images/internet-mail-22x22.png);
+  display: inline-block;
+  display-repeat: no-repeat;
+  outline: medium none;
+  overflow: hidden;
+  vertical-align: bottom;
+  width: 22px;
+  height: 22px;
+  float: left;
+}
+
+.recipientsIcon {
+  background-image: url(/images/system-users-22x22.png);
+  display: inline-block;
+  display-repeat: no-repeat;
+  outline: medium none;
+  overflow: hidden;
+  vertical-align: bottom;
+  width: 22px;
+  height: 22px;
+  float: left;
 }
 
   /* ]]> */
@@ -200,7 +248,14 @@ dd {
 
       <div class="column span-6 colborder sidebar">
         <hr class="space" />
-        <lift:Menu.builder />
+        <ul>
+          <li><div class="homeIcon" /><lift:Menu.item donthide="true" name="Home" a:class="homemenu"><span>Home</span></lift:Menu.item></li>
+          <li><div class="messagesIcon" /><lift:Menu.item donthide="true" name="Messages" a:class="msgmenu"><span>Messages</span></lift:Menu.item></li>
+          <li><div class="recipientsIcon" /><lift:Menu.item donthide="true" name="Recipients" a:class="recptmenu"><span>Recipients</span></lift:Menu.item></li>
+          <li><div class="searchIcon" /><lift:Menu.item donthide="true" name="Search" a:class="searchmenu"><span>Search</span></lift:Menu.item></li>
+        </ul>
+        <!--<lift:Menu.builder />-->
+
         <div>
           <lift:Msgs showAll="true"/>
           <hr class="space" />
