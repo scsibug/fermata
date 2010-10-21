@@ -31,7 +31,9 @@ Use testing mail accounts:
 Status
 ------
 
-Basic functionality like receiving and displaying messages works.
+Beyond basic functionality such as receiving and displaying messages, we've implemented Lucene-powered search, listings by message and by recipient, and the ability to view attachments.  Various RSS feeds are available as well, so you can keep track of messages directly through mail clients that support feeds (should work with Mail.app, Outlook, Evolution, and others).
+
+Future work will include better integration with testing frameworks, such as Selenium.
 
 Installation
 ------------
