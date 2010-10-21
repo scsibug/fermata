@@ -9,7 +9,6 @@ import org.apache.commons.io.{IOUtils}
 
 object Attachment extends Logger {
   def view (msgid: String, attId: String): Box[LiftResponse] = {
-    info("Request to view msg "+msgid+", attachment #"+attId)
     val message : Box[Message] = Message.getMessageById(msgid.toLong)
     val response = message match {
       case Full(msg) => {
