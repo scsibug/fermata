@@ -18,7 +18,7 @@ object Attachment extends Logger {
           IOUtils.copy(attachmentStream,os)
           os.close()
         }
-        val osr = OutputStreamResponse(writer _, List(Pair("Content-Type", contentType)))
+        val osr = OutputStreamResponse(writer _, List(("Content-Type", contentType)))
         Full(osr)
       }
       case _ => Empty

@@ -71,7 +71,8 @@ class MimeAttachments(m: MimeMessage) extends Logger {
 
   def getAttachment(id:Int): Pair[String,InputStream] = {
     val ais = attachmentsList(id).getInputStream()
-    return Pair("text/plain", ais);
+    val ct = attachmentsList(id).getContentType()
+    return Pair(ct, ais);
   }
 
 }
