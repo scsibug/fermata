@@ -39,7 +39,6 @@ class MimeAttachments(m: MimeMessage) extends Logger {
     val attmts = attachmentsList
     var attmtNodes = List[NodeSeq]()
     for(i <- 0 until attmts.length) {
-      info("Looking at attachment "+i.toString)
       val p = attmts(i)
       val ct: String = p.getContentType().takeWhile(_!=';')
       var fn: String = p.getFileName()
@@ -55,7 +54,6 @@ class MimeAttachments(m: MimeMessage) extends Logger {
         attmtNodes = <li class="mime-package-x-generic" title={ct}>{attachmentLink}</li> :: attmtNodes
       }
     }
-    info("Found "+attmtNodes.length+" nodes")
     return attmtNodes.reverse
   }
 
