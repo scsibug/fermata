@@ -36,7 +36,7 @@ class Message extends LongKeyedMapper[Message] with IdPK {
   def getHeaders() : String = {
     val headertext = new StringBuilder()    
     if (msgBody.get != null) {
-      val msg = new SMTPMessage(null, new ByteArrayInputStream(msgBody))
+      val msg = smtpMessage
       val headers = msg.getAllHeaderLines()
       while(headers.hasMoreElements()) {
         headertext.append(headers.nextElement()).append("\n")
@@ -45,13 +45,20 @@ class Message extends LongKeyedMapper[Message] with IdPK {
     headertext.toString()
   }
 
+  def getAttachment(id: Int) : Pair[String,InputStream] = {
+    val msgatt = MimeAttachments(smtpMessage)
+    msgatt.getAttachment(id)
+  }
+
+  def smtpMessage = new SMTPMessage(null, new ByteArrayInputStream(msgBody))
+
   // Returns a list of descriptions of MIME leaf-nodes 
   def getAttachments() : Seq[NodeSeq] = {
     var attachments : Seq[NodeSeq] = List[NodeSeq]()
     if (msgBody.get != null) {
-      val msg = new SMTPMessage(null, new ByteArrayInputStream(msgBody))
+      val msg = smtpMessage
       val msgatt = MimeAttachments(msg)
-      attachments = msgatt.allAttachments
+      attachments = msgatt.allAttachments(url)
     }
     attachments
   }

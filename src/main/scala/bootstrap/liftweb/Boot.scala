@@ -12,6 +12,7 @@ import mapper._
 
 import code.model._
 import code.api._
+import code.view._
 
 import code.lib.{MessageIndex,MailServerManager}
 
@@ -54,6 +55,12 @@ class Boot {
     LiftRules.addToPackages("code")
 
     LiftRules.dispatch.prepend(RestAPI.dispatch)
+
+    // Send attachments directly
+    LiftRules.dispatch.append {
+      case Req(List("msg",msgId,"attachments",attId),_,_) =>
+        () => Attachment.view(msgId,attId)
+    }
 
     // Rewrites for messages
     LiftRules.statelessRewrite.append {
