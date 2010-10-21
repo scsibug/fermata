@@ -65,14 +65,14 @@ class Messages extends DispatchSnippet {
 
     message match {
       case Full(m) =>
-        bind("message", xhtml, 
+        bind("message", xhtml,
           "sender" -> m.sender,
           "subject" -> m.subject,
           "sent" -> <abbr class="timeago" title={m.atomSentDate}>{m.sentDate}</abbr>,
           "textContent" -> m.textContent,
           "recipients" -> m.recipientsPrintable,
           "headers" -> m.getHeaders(),
-          "attachments" -> m.getAttachments().map{x => <li>{x}</li>})
+          "attachments" -> m.getAttachments().flatMap({x=>x}))
       case _ => <strong>{?("Could not find message")}</strong>
     }
   }

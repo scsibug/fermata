@@ -4,6 +4,7 @@ import com.sun.mail.smtp.SMTPMessage
 import javax.mail.internet.MimeMessage
 import javax.mail.{Part, Multipart}
 import javax.mail.Session
+import _root_.scala.xml.{NodeSeq, Text}
 
 import net.liftweb.common.Logger
 
@@ -34,15 +35,26 @@ class MimeAttachments(m: MimeMessage) {
   txtbox
   }
 
-  def allAttachments: Seq[String] = allAttachments(m)
+  def allAttachments: Seq[NodeSeq] = allAttachments(m)
 
-  def allAttachments(p:Part): Seq[String] = {
+  def allAttachments(p:Part): Seq[NodeSeq] = {
     if (p.isMimeType("multipart/*")) {
       val mp : Multipart = p.getContent().asInstanceOf[Multipart]
       val range = 0.until(mp.getCount())
       return range.flatMap{x:Int => allAttachments(mp.getBodyPart(x))}
     } else {
-      return List(p.getFileName() + ": " +p.getContentType().takeWhile(_!=';'))
+      val ct: String = p.getContentType().takeWhile(_!=';')
+      var fn: String = p.getFileName()
+      if (fn == null || fn == "") {fn = "Unnamed"}
+      if (ct=="text/html") {
+        return List(<li class="mime-text-html" title={ct}>{fn}</li>)
+      } else if (ct.startsWith("text")) {
+        return List(<li class="mime-text-x-generic" title={ct}>{fn}</li>)
+      } else if (ct.startsWith("image")) {
+        return List(<li class="mime-image-x-generic" title={ct}>{fn}</li>)
+      } else {
+        return List(<li class="mime-package-x-generic" title={ct}>{fn}</li>)
+      }
     }
   }
 

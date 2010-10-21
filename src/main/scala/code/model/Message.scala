@@ -46,8 +46,8 @@ class Message extends LongKeyedMapper[Message] with IdPK {
   }
 
   // Returns a list of descriptions of MIME leaf-nodes 
-  def getAttachments() : Seq[String] = {
-    var attachments : Seq[String] = List[String]()
+  def getAttachments() : Seq[NodeSeq] = {
+    var attachments : Seq[NodeSeq] = List[NodeSeq]()
     if (msgBody.get != null) {
       val msg = new SMTPMessage(null, new ByteArrayInputStream(msgBody))
       val msgatt = MimeAttachments(msg)
