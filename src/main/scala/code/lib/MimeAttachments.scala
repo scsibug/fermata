@@ -11,7 +11,7 @@ import net.liftweb.common.Logger
 import java.io.{IOException, InputStream, ByteArrayInputStream}
 import org.apache.commons.io.{IOUtils}
 
-class MimeAttachments(m: MimeMessage) {
+class MimeAttachments(m: MimeMessage) extends Logger {
 
   def getText:Option[String] = getText(m)
 
@@ -35,30 +35,30 @@ class MimeAttachments(m: MimeMessage) {
   txtbox
   }
 
-  def allAttachments(msgUrl: String): Seq[NodeSeq] = allAttachments(msgUrl,m,0)
-
-  def allAttachments(msgUrl: String, p:Part, id:Int): Seq[NodeSeq] = {
-    if (p.isMimeType("multipart/*")) {
-      val mp : Multipart = p.getContent().asInstanceOf[Multipart]
-      val range = 0.until(mp.getCount())
-      return range.flatMap{x:Int => allAttachments(msgUrl,mp.getBodyPart(x),(id+1))}
-    } else {
+  def allAttachments(msgUrl: String): Seq[NodeSeq] = {//allAttachments(msgUrl,m,0)
+    val attmts = attachmentsList
+    var attmtNodes = List[NodeSeq]()
+    for(i <- 0 until attmts.length) {
+      info("Looking at attachment "+i.toString)
+      val p = attmts(i)
       val ct: String = p.getContentType().takeWhile(_!=';')
       var fn: String = p.getFileName()
       if (fn == null || fn == "") {fn = "Unnamed"}
-      val attachmentLink = <a href={msgUrl+"/attachments/"+id.toString()}>{fn}</a>
+      val attachmentLink = <a href={msgUrl+"/attachments/"+i.toString()}>{fn}</a>
       if (ct=="text/html") {
-        return List(<li class="mime-text-html" title={ct}>{fn}</li>)
+        attmtNodes = <li class="mime-text-html" title={ct}>{attachmentLink}</li> :: attmtNodes
       } else if (ct.startsWith("text")) {
-        return List(<li class="mime-text-x-generic" title={ct}>{fn}</li>)
+        attmtNodes = <li class="mime-text-x-generic" title={ct}>{attachmentLink}</li> :: attmtNodes
       } else if (ct.startsWith("image")) {
-        return List(<li class="mime-image-x-generic" title={ct}>{attachmentLink}</li>)
+        attmtNodes = <li class="mime-image-x-generic" title={ct}>{attachmentLink}</li> :: attmtNodes
       } else {
-        return List(<li class="mime-package-x-generic" title={ct}>{fn}</li>)
+        attmtNodes = <li class="mime-package-x-generic" title={ct}>{attachmentLink}</li> :: attmtNodes
       }
     }
+    info("Found "+attmtNodes.length+" nodes")
+    return attmtNodes.reverse
   }
-  
+
   def attachmentsList = attachments(m)
 
   def attachments(p:Part): Seq[Part] = {
@@ -72,7 +72,7 @@ class MimeAttachments(m: MimeMessage) {
   }
 
   def getAttachment(id:Int): Pair[String,InputStream] = {
-    val ais = attachmentsList(id-1).getInputStream()
+    val ais = attachmentsList(id).getInputStream()
     return Pair("text/plain", ais);
   }
 
