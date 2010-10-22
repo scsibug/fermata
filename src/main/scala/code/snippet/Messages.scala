@@ -18,12 +18,15 @@ import S.?
 class Messages extends DispatchSnippet {
 
   override def dispatch = {
+    case "count" => count _
     case "all" => all _
     case "top" => top _ 
     case "paginate" => paginator.paginate _
 
     case "detail" => detail _
   }
+
+  def count(xhtml: NodeSeq): NodeSeq = Text(Message.count.toString)
 
   val paginator = new SortedMapperPaginatorSnippet(Message,Message.id, "ID" -> Message.id){
     override def itemsPerPage = 20

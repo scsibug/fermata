@@ -17,6 +17,7 @@ import S.?
 class Recipients extends DispatchSnippet {
 
   override def dispatch = {
+    case "count" => count _
     case "listMessages" =>  listMessages _
     case "address" => address _
 
@@ -24,6 +25,8 @@ class Recipients extends DispatchSnippet {
     case "top" => top _
     case "paginate" => paginator.paginate _
   }
+
+  def count(xhtml: NodeSeq): NodeSeq = Text(Recipient.count.toString)
 
   val paginator = new SortedMapperPaginatorSnippet(Recipient,Recipient.id, "ID" -> Recipient.id){
     override def itemsPerPage = 20
