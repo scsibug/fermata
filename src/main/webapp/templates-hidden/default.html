@@ -7,12 +7,16 @@
 		<title>Fermata</title>
     <lift:CSS.blueprint />
     <lift:CSS.fancyType />
+    <!-- Colorbox CSS --> 
+    <link type="text/css" media="screen" rel="stylesheet" href="/css/colorbox.css" /> 
     <script id="jquery" src="/classpath/jquery.js" type="text/javascript"/>
     <script id="json" src="/classpath/json.js" type="text/javascript"/>
+    <script id="colorbox" src="/scripts/jquery.colorbox-min.js" type="text/javascript"/>
     <script id="jquery.timeago" src="/scripts/jquery.timeago.js" type="text/javascript"/>
     <script type="text/javascript"> 
 /* <![CDATA[ */
       jQuery(document).ready(function($) {
+        $("a[rel='colorbox']").colorbox({photo:'true'});
         $("abbr.timeago").timeago();
         $('#linkedrows tr').click(function() {
             var href = $(this).find("a").attr("href");
@@ -25,7 +29,7 @@
           $(this).addClass("over");})
         .mouseout(function() {
           $(this).removeClass("over");})
-    });
+      });
 
   /* ]]> */
     </script> 
@@ -288,7 +292,6 @@ dd {
           Fermata is Copyright 2010 Greg Heartsfield.  Distributed under the BSD-3 license.
         </h4>
       </div>
-      
     </div>
   </body>
 </html>

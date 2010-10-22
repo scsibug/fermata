@@ -49,7 +49,8 @@ class MimeAttachments(m: MimeMessage) extends Logger {
       } else if (ct.startsWith("text")) {
         attmtNodes = <li class="mime-text-x-generic" title={ct}>{attachmentLink}</li> :: attmtNodes
       } else if (ct.startsWith("image")) {
-        attmtNodes = <li class="mime-image-x-generic" title={ct}>{attachmentLink}</li> :: attmtNodes
+        val imgLink = <a rel="colorbox" title={fn} href={msgUrl+"/attachments/"+i.toString()}>{fn}</a>
+        attmtNodes = <li class="mime-image-x-generic" title={ct}>{imgLink}</li> :: attmtNodes
       } else {
         attmtNodes = <li class="mime-package-x-generic" title={ct}>{attachmentLink}</li> :: attmtNodes
       }

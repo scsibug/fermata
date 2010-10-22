@@ -18,6 +18,8 @@ object Attachment extends Logger {
           IOUtils.copy(attachmentStream,os)
           os.close()
         }
+        //var ct: String = contentType.takeWhile(_!=';')
+        //if (ct == "image/jpg") {ct = "image/jpeg"}
         val osr = OutputStreamResponse(writer _, List(("Content-Type", contentType)))
         Full(osr)
       }
