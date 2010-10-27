@@ -13,8 +13,7 @@ import javax.mail.{Part, Multipart}
 
 import net.liftweb.common.Logger
 import net.liftweb.actor._
-import code.comet.{MostRecentMail, NewMessage}
-
+import code.comet.{MailStats, NewMessage}
 
 import code.model.Message
 import code.model.Recipient
@@ -87,7 +86,7 @@ class Handler(ctx: MessageContext) extends MessageHandler with Logger {
     msg_entity save
     var recipient_entities = recipients.map({x:String => Recipient.recipientFindOrNew(x)})
     recipient_entities.map({x:Recipient => x save; MessageRecipient.join(x,msg_entity)})
-    //MostRecentMail ! NewMessage(msg_entity)
+    MailStats ! NewMessage(msg_entity)
     MessageIndex ! NewMessage(msg_entity)
   }
 

@@ -11,14 +11,9 @@
   <p>An SMTP server is now running on this computer.  Configure the
     software you want to test to send mail to this host, on port 2500.</p>
 
-  <h2><lift:Messages.count /> Messages, <lift:Recipients.count /> Recipients</h2>
-
-<!--
-<h3>Most Recent Message</h3>
-<lift:comet type="MostRecentMail" name="Other">
-  <recentMail:subject />
+<lift:comet type="MailStats">
+  <h2><mailStats:msgCount /> Messages, <mailStats:rcptCount /> Recipients</h2>
 </lift:comet>
--->
 
 <h3>Recent</h3>
 

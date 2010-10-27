@@ -9,30 +9,48 @@ import scala.xml.Text
 import scala.collection.mutable.{HashMap, HashSet}
 import net.liftweb.actor._
 
-import code.model.Message
+import code.model.{Message,Recipient}
 
-class MostRecentMail extends CometActor {
-  override def defaultPrefix = Full("recentMail")
+class MailStats extends CometActor {
+  override def defaultPrefix = Full("mailStats")
 
-  def render = bind("subject" -> subject)
+  def render = bind("subject" -> subject,
+                    "msgCount" -> msgCount,
+                    "rcptCount" -> rcptCount)
 
-  def subject = (<span id="subject">Original</span>)
+  def msgCount = {
+    (<span id="msgCount">{Message.count.toString}</span>)
+  }
+
+  def rcptCount = {
+    (<span id="rcptCount">{Recipient.count.toString}</span>)
+  }
+
+  def subject = {
+    val msgbox = Message.getLatestMessage()
+    val s = msgbox.run("No messages received yet.") {(s:String,m:Message) => m.subject}
+    (<span id="subject">{s}</span>)
+  }
 
   override def lowPriority : PartialFunction[Any, Unit] = {
     case NewMessage(msg: Message) => {
-      println("got new msg")
-//      val msgbox = Message.getLatestMessage()
+      val msgbox = Message.getLatestMessage()
       partialUpdate(SetHtml("subject", Text(msg.subject)))
-//      msgbox.run() {(s:Unit, m:Message) => partialUpdate(SetHtml("subject", Text(m.subject)));print(m.subject);Unit}
+      msgbox.run() {
+        (s:Unit, m:Message) => partialUpdate(SetHtml("subject",Text(m.subject)));
+        partialUpdate(SetHtml("msgCount", msgCount));
+        partialUpdate(SetHtml("rcptCount", rcptCount));
+        Unit
+      }
     }
   }
 
   override def localSetup {
-    MostRecentMail ! AddMessageListener(this)
+    MailStats ! AddMessageListener(this)
   }
 
   override def localShutdown {
-    MostRecentMail ! RemoveMessageListener(this)
+    MailStats ! RemoveMessageListener(this)
   }
 
 }
@@ -41,7 +59,7 @@ case class NewMessage(msg: Message)
 case class AddMessageListener(listener: LiftActor)
 case class RemoveMessageListener(listener: LiftActor)
 
-object MostRecentMail extends LiftActor {
+object MailStats extends LiftActor {
   val listeners = new HashSet[LiftActor]
 
   def notifyListeners(msg: Message) = {
