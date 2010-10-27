@@ -18,7 +18,7 @@ Creating a binary release
  * rename standalone WAR to fermata.war
  * mkdir fermata-0.X
   * add fermata.war, README.markdown, LICENSE, fermata
- * tar -cvf fermata-0.6.tar.gz fermata-0.6
+ * tar -czvf fermata-0.6.tar.gz fermata-0.6
  * upload fermata-0.X.war and build/fermata-0.X-standalone.war to S3.
   * hs3 so ghsoftware fermata-0.X.tar.gz < fermata-0.X.tar.gz
  * edit http://github.com/scsibug/fermata/wiki to reference new release.
