@@ -14,17 +14,13 @@ import code.model.{Message,Recipient}
 class MailStats extends CometActor {
   override def defaultPrefix = Full("mailStats")
 
+  // initial render
   def render = bind("subject" -> subject,
                     "msgCount" -> msgCount,
                     "rcptCount" -> rcptCount)
 
-  def msgCount = {
-    (<span id="msgCount">{Message.count.toString}</span>)
-  }
-
-  def rcptCount = {
-    (<span id="rcptCount">{Recipient.count.toString}</span>)
-  }
+  def msgCount = (<span id="msgCount">{Message.count.toString}</span>)
+  def rcptCount = (<span id="rcptCount">{Recipient.count.toString}</span>)
 
   def subject = {
     val msgbox = Message.getLatestMessage()
@@ -32,6 +28,7 @@ class MailStats extends CometActor {
     (<span id="subject">{s}</span>)
   }
 
+  // With every new message, this is called to update stats for connected clients
   override def lowPriority : PartialFunction[Any, Unit] = {
     case NewMessage(msg: Message) => {
       val msgbox = Message.getLatestMessage()
