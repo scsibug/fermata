@@ -40,13 +40,15 @@ class Messages extends DispatchSnippet {
   protected def many(messages: List[Message], xhtml: NodeSeq): NodeSeq = 
     messages.flatMap(a => single(a,xhtml))
 
-  protected def single(m: Message, xhtml: NodeSeq): NodeSeq =
+  protected def single(m: Message, xhtml: NodeSeq): NodeSeq = {
+    val humanSubject = if (m.subject.is == null || m.subject.is == "") { "(No Subject)" } else { m.subject }
     bind("a", xhtml,
       "sender" -> m.sender,
       "subject" -> m.subject,
       "sent" -> <abbr class="timeago" title={m.atomSentDate}>{m.sentDate}</abbr>,
-      "linkedsubject" -%> <a href={m.url}>{m.subject}</a>
+      "linkedsubject" -%> <a href={m.url}>{humanSubject}</a>
     )
+  }
     
   // Display all entries the paginator returns
   def all(xhtml: NodeSeq): NodeSeq = many(paginator.page,xhtml)
