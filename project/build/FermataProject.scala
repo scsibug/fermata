@@ -1,6 +1,7 @@
 import sbt._
+import net.usersource.jettyembed.JettyEmbedWebProject
 
-class FermataProject(info: ProjectInfo) extends DefaultWebProject(info) {
+class FermataProject(info: ProjectInfo) extends JettyEmbedWebProject(info) {
   val liftVersion = "2.1"
   val scalaToolsSnapshots = "Scala-Tools Maven2 Snapshots Repository" at "http://scala-tools.org/repo-snapshots/"
   val mavenLocal = "Local Maven Repository" at "file://"+Path.userHome+"/.m2/repository"
