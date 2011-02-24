@@ -16,6 +16,8 @@ import code.view._
 
 import code.lib.{MessageIndex,MailServerManager}
 
+import java.lang.{Integer => JInteger}
+
 /**
  * A class that's instantiated early and run.  It allows the application
  * to modify lift's environment
@@ -42,7 +44,8 @@ class Boot {
                         MessageRecipient)
 
     // Start a default mail server
-    MailServerManager.startServer("default",2500)
+    MailServerManager.startServer("default",
+                                  JInteger.getInteger("fermataSmtpPort", 2500).intValue())
     // Ping the indexer, so that it starts up immediately
     MessageIndex ! None
     // Shutdown mail server at Lift unload
