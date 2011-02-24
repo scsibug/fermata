@@ -268,13 +268,8 @@ dd {
 
       <div class="column span-6 colborder sidebar">
         <hr class="space" />
-        <ul>
-          <li><div class="homeIcon" /><lift:Menu.item donthide="true" name="Home" a:class="homemenu"><span>Home</span></lift:Menu.item></li>
-          <li><div class="messagesIcon" /><lift:Menu.item donthide="true" name="Messages" a:class="msgmenu"><span>Messages</span></lift:Menu.item></li>
-          <li><div class="recipientsIcon" /><lift:Menu.item donthide="true" name="Recipients" a:class="recptmenu"><span>Recipients</span></lift:Menu.item></li>
-          <li><div class="searchIcon" /><lift:Menu.item donthide="true" name="Search" a:class="searchmenu"><span>Search</span></lift:Menu.item></li>
-        </ul>
-        <!--<lift:Menu.builder />-->
+
+        <lift:Menu.builder li:class="menuitem" ul:class="topmenu" />
 
         <div>
           <lift:Msgs showAll="true"/>
