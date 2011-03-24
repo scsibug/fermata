@@ -43,6 +43,7 @@ class Messages extends DispatchSnippet {
   protected def single(m: Message, xhtml: NodeSeq): NodeSeq = {
     val humanSubject = if (m.subject.is == null || m.subject.is == "") { "(No Subject)" } else { m.subject }
     bind("a", xhtml,
+      "recipients" -> m.recipientsPrintable,
       "sender" -> m.sender,
       "subject" -> m.subject,
       "sent" -> <abbr class="timeago" title={m.atomSentDate}>{m.sentDate}</abbr>,
