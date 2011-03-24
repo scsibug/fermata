@@ -8,8 +8,7 @@
     <li>Verify only the emails that should be sent actually are.</li>
   </ul>
 
-  <p>An SMTP server is now running on this computer.  Configure the
-    software you want to test to send mail to this host, on port 2500.</p>
+  <p>An SMTP server is now running.  Configure the software you want to test to send mail to this host, on port <lift:Configuration.smtpPort></lift:Configuration.smtpPort>.</p>
 
 <lift:comet type="MailStats">
   <h2><mailStats:msgCount /> Messages, <mailStats:rcptCount /> Recipients</h2>
